@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Voice: The Election Guide</title>
+    <meta name="description" content="An interactive guide to understanding the election process, timelines, and how to make your vote count.">
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="translations.js"></script>
+    <script type="module">
+      import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+      mermaid.initialize({ startOnLoad: true, theme: 'base',
+        themeVariables: {
+          primaryColor: '#80cbc4', primaryTextColor: '#1a3c40',
+          primaryBorderColor: '#4db6ac', lineColor: '#546e7a',
+          secondaryColor: '#b2dfdb', tertiaryColor: '#e0f2f1'
+        }, securityLevel: 'loose'
+      });
+    </script>
+</head>
+<body>
+
+<!-- ── Navigation ── -->
+<nav id="mainNav">
+    <div class="logo">🗳️ VoteAssist</div>
+
+    <!-- Desktop links -->
+    <ul class="nav-links" id="navLinks">
+        <li><a href="#intro"       class="active" id="nav-intro"       data-i18n="nav.start">Start</a></li>
+        <li><a href="#process"     id="nav-process"     data-i18n="nav.process">Process</a></li>
+        <li><a href="#timeline"    id="nav-timeline"    data-i18n="nav.timeline">Timeline</a></li>
+        <li><a href="#quiz"        id="nav-quiz"        data-i18n="nav.quiz">Quiz</a></li>
+        <li><a href="#tracker"     id="nav-tracker"     data-i18n="nav.tracker">Tracker</a></li>
+        <li><a href="#comparison"  id="nav-comparison"  data-i18n="nav.compare">Compare</a></li>
+        <li><a href="#dosanddonts" id="nav-guide"       data-i18n="nav.guide">Voter Guide</a></li>
+    </ul>
+
+    <div class="nav-controls">
+        <!-- Language toggle -->
+        <button class="lang-toggle" id="langToggle" onclick="toggleLanguage()" title="Switch Language">
+            <span class="lang-flag">🇮🇳</span>
+            <span id="langLabel">हिं</span>
+        </button>
+        <!-- Dark mode toggle -->
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" title="Toggle Dark Mode">
+            <span class="theme-icon" id="themeIcon">🌙</span>
+        </button>
+        <!-- Hamburger -->
+        <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+    </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+    <a href="#intro"       onclick="closeMobileMenu()" data-i18n="mob.start">🏠 Start</a>
+    <a href="#process"     onclick="closeMobileMenu()" data-i18n="mob.process">📋 Process</a>
+    <a href="#timeline"    onclick="closeMobileMenu()" data-i18n="mob.timeline">📊 Timeline</a>
+    <a href="#quiz"        onclick="closeMobileMenu()" data-i18n="mob.quiz">🧠 Quiz</a>
+    <a href="#tracker"     onclick="closeMobileMenu()" data-i18n="mob.tracker">✅ Tracker</a>
+    <a href="#comparison"  onclick="closeMobileMenu()" data-i18n="mob.compare">⚖️ Compare</a>
+    <a href="#dosanddonts" onclick="closeMobileMenu()" data-i18n="mob.guide">📖 Voter Guide</a>
+</div>
+
+<main id="app">
+
+<!-- ══════════════════════════════════════════
+     SECTION 1 — INTRO + COUNTDOWN
+══════════════════════════════════════════ -->
+<section id="intro" class="slide">
+    <div class="content-wrapper">
+        <div class="section-badge" data-i18n="badge.welcome">Welcome</div>
+        <h1 data-i18n="intro.h1">Welcome to VoteAssist</h1>
+        <p data-i18n="intro.p">Your interactive guide to understanding the election process, timelines, and how to make your vote count.</p>
+
+        <!-- Countdown Timer -->
+        <div class="countdown-box">
+            <p class="countdown-label" data-i18n="countdown.label">⏳ Next Election Countdown</p>
+            <div class="countdown-grid">
+                <div class="countdown-unit"><span id="cd-days">--</span><label data-i18n="cd.days">Days</label></div>
+                <div class="countdown-sep">:</div>
+                <div class="countdown-unit"><span id="cd-hours">--</span><label data-i18n="cd.hours">Hours</label></div>
+                <div class="countdown-sep">:</div>
+                <div class="countdown-unit"><span id="cd-mins">--</span><label data-i18n="cd.mins">Mins</label></div>
+                <div class="countdown-sep">:</div>
+                <div class="countdown-unit"><span id="cd-secs">--</span><label data-i18n="cd.secs">Secs</label></div>
+            </div>
+            <p class="countdown-target" data-i18n="countdown.target">Target: Bihar Assembly Elections — Nov 15, 2026</p>
+        </div>
+
+        <button onclick="navigate('process')" class="cta-btn" id="exploreBtn" data-i18n="intro.btn">Explore the Process →</button>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION 2 — ELECTION PROCESS (Flowchart)
+══════════════════════════════════════════ -->
+<section id="process" class="slide">
+    <div class="content-wrapper">
+        <div class="panel-header-row">
+            <div><div class="section-badge" data-i18n="badge.flowchart">Flowchart</div><h2 data-i18n="process.h2">The Election Process</h2></div>
+            <span class="panel-tag" data-i18n="tag.flowchart">Interactive — click any step</span>
+        </div>
+        <p data-i18n="process.p">Follow the flowchart to understand the key steps in democratic elections. Click any node to learn more.</p>
+        <div class="mermaid-container">
+            <div class="mermaid">
+                graph TD
+                    A[Citizen Registers to Vote] --> B[Check Electoral Roll]
+                    B --> C[Election Schedule Announced]
+                    C --> D[Candidates File Nominations]
+                    D --> E[Campaigning Phase]
+                    E --> F[Polling Day: Cast Votes via EVM]
+                    F --> G[Votes Counted]
+                    G --> H[Results Declared]
+                    H --> I[Government Formation]
+                    click A call showDetails("A")
+                    click B call showDetails("B")
+                    click C call showDetails("C")
+                    click D call showDetails("D")
+                    click E call showDetails("E")
+                    click F call showDetails("F")
+                    click G call showDetails("G")
+                    click H call showDetails("H")
+                    click I call showDetails("I")
+            </div>
+        </div>
+        <div class="nav-buttons">
+            <button onclick="navigate('intro')"    class="nav-btn" data-i18n="btn.back">← Back</button>
+            <button onclick="navigate('timeline')" class="cta-btn" data-i18n="btn.next.timeline">Next: Timeline →</button>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION 3 — TIMELINE & STATS
+══════════════════════════════════════════ -->
+<section id="timeline" class="slide">
+    <div class="content-wrapper">
+        <div class="panel-header-row">
+            <div><div class="section-badge" data-i18n="badge.graphs">Graphs</div><h2 data-i18n="timeline.h2">Voter Turnout Trends</h2></div>
+            <span class="panel-tag" data-i18n="tag.graphs">Key Deadlines &amp; Data</span>
+        </div>
+        <p data-i18n="timeline.p">Understanding past participation helps us recognise the importance of every single vote.</p>
+
+        <div class="chart-container">
+            <canvas id="turnoutChart"></canvas>
+        </div>
+
+        <!-- Historical Election Timeline (horizontal) -->
+        <h3 class="sub-heading" data-i18n="timeline.hist">📅 Historical Indian Elections</h3>
+        <div class="h-timeline-wrapper">
+            <div class="h-timeline">
+                <div class="h-event">
+                    <div class="h-dot"></div>
+                    <div class="h-year">1952</div>
+                    <div class="h-desc">First General Election. INC wins 364/489 seats. Jawaharlal Nehru becomes PM.</div>
+                </div>
+                <div class="h-event">
+                    <div class="h-dot"></div>
+                    <div class="h-year">1977</div>
+                    <div class="h-desc">First non-Congress government. Janata Party wins 295 seats after Emergency era.</div>
+                </div>
+                <div class="h-event">
+                    <div class="h-dot"></div>
+                    <div class="h-year">1991</div>
+                    <div class="h-desc">Held amid Rajiv Gandhi assassination. INC wins 244 seats. P.V. Narasimha Rao becomes PM.</div>
+                </div>
+                <div class="h-event">
+                    <div class="h-dot"></div>
+                    <div class="h-year">2014</div>
+                    <div class="h-desc">BJP wins historic 282-seat majority. Narendra Modi becomes PM. Turnout: 66.4%.</div>
+                </div>
+                <div class="h-event">
+                    <div class="h-dot"></div>
+                    <div class="h-year">2019</div>
+                    <div class="h-desc">BJP re-elected with 303 seats. Record turnout of 67.4%. Modi returns as PM.</div>
+                </div>
+                <div class="h-event">
+                    <div class="h-dot"></div>
+                    <div class="h-year">2024</div>
+                    <div class="h-desc">NDA coalition wins 293 seats. BJP gets 240. Modi serves third term as PM.</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-info">
+            <h3 data-i18n="timeline.info.h3">Typical Indian Election Timeline</h3>
+            <ul class="timeline-list">
+                <li data-i18n="tl.1"><strong>Announcement:</strong> Election Commission declares schedule</li>
+                <li data-i18n="tl.2"><strong>Nominations:</strong> Candidates file their papers</li>
+                <li data-i18n="tl.3"><strong>Campaigning:</strong> Rallies and public meetings</li>
+                <li data-i18n="tl.4"><strong>Polling:</strong> Held in multiple phases across the country</li>
+                <li data-i18n="tl.5"><strong>Counting Day:</strong> Votes tallied and results announced</li>
+                <li data-i18n="tl.6"><strong>Government Formation:</strong> Winning coalition forms government</li>
+            </ul>
+        </div>
+
+        <div class="nav-buttons">
+            <button onclick="navigate('process')" class="nav-btn" data-i18n="btn.back">← Back</button>
+            <button onclick="navigate('quiz')"    class="cta-btn" data-i18n="btn.next.quiz">Next: Take the Quiz →</button>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION 4 — VOTER READINESS QUIZ
+══════════════════════════════════════════ -->
+<section id="quiz" class="slide">
+    <div class="content-wrapper">
+        <div class="section-badge" data-i18n="badge.quiz">🧠 Quiz</div>
+        <h2 data-i18n="quiz.h2">Voter Readiness Quiz</h2>
+        <p data-i18n="quiz.p">Test your knowledge of the Indian electoral process. Pick the best answer for each question!</p>
+
+        <div class="quiz-container" id="quizContainer">
+            <!-- Questions injected by JS -->
+        </div>
+
+        <!-- Result card (hidden until submitted) -->
+        <div class="quiz-result" id="quizResult" style="display:none;">
+            <div class="result-emoji" id="resultEmoji">🎉</div>
+            <h3 id="resultTitle">Great Job!</h3>
+            <p id="resultText">You scored X out of 6.</p>
+            <div class="score-bar-wrap">
+                <div class="score-bar-fill" id="scoreBarFill"></div>
+            </div>
+            <button class="cta-btn" onclick="resetQuiz()" style="margin-top:1rem;" data-i18n="quiz.retake">🔄 Retake Quiz</button>
+        </div>
+
+        <div class="nav-buttons">
+            <button onclick="navigate('timeline')" class="nav-btn" data-i18n="btn.back">← Back</button>
+            <button onclick="navigate('tracker')"  class="cta-btn" data-i18n="btn.next.tracker">Next: Tracker →</button>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION 5 — PROGRESS TRACKER
+══════════════════════════════════════════ -->
+<section id="tracker" class="slide">
+    <div class="content-wrapper">
+        <div class="section-badge" data-i18n="badge.tracker">✅ Tracker</div>
+        <h2 data-i18n="tracker.h2">My Voter Progress Tracker</h2>
+        <p data-i18n="tracker.p">Check off each step as you complete it. Your progress is saved automatically in this browser.</p>
+
+        <div class="tracker-progress-row">
+            <div class="tracker-bar-wrap">
+                <div class="tracker-bar-fill" id="trackerBarFill"></div>
+            </div>
+            <span class="tracker-pct" id="trackerPct">0%</span>
+        </div>
+
+        <ul class="tracker-list" id="trackerList">
+            <li data-key="t1"><label><input type="checkbox" id="t1" onchange="updateTracker()"> <span data-i18n="track.1">Checked my voter registration status</span></label></li>
+            <li data-key="t2"><label><input type="checkbox" id="t2" onchange="updateTracker()"> <span data-i18n="track.2">Found my polling station location</span></label></li>
+            <li data-key="t3"><label><input type="checkbox" id="t3" onchange="updateTracker()"> <span data-i18n="track.3">Researched candidates and their platforms</span></label></li>
+            <li data-key="t4"><label><input type="checkbox" id="t4" onchange="updateTracker()"> <span data-i18n="track.4">Understood the key ballot issues</span></label></li>
+            <li data-key="t5"><label><input type="checkbox" id="t5" onchange="updateTracker()"> <span data-i18n="track.5">Prepared valid photo ID for polling day</span></label></li>
+            <li data-key="t6"><label><input type="checkbox" id="t6" onchange="updateTracker()"> <span data-i18n="track.6">Planned my travel to the polling station</span></label></li>
+            <li data-key="t7"><label><input type="checkbox" id="t7" onchange="updateTracker()"> <span data-i18n="track.7">Confirmed polling station hours</span></label></li>
+            <li data-key="t8"><label><input type="checkbox" id="t8" onchange="updateTracker()"> <span data-i18n="track.8">Voted! 🗳️</span></label></li>
+        </ul>
+
+        <button class="nav-btn" onclick="resetTracker()" style="margin-top:1rem;" data-i18n="tracker.reset">🔄 Reset Tracker</button>
+
+        <div class="nav-buttons">
+            <button onclick="navigate('quiz')"       class="nav-btn" data-i18n="btn.back">← Back</button>
+            <button onclick="navigate('comparison')" class="cta-btn" data-i18n="btn.next.compare">Next: Compare →</button>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION 6 — CANDIDATE COMPARISON
+══════════════════════════════════════════ -->
+<section id="comparison" class="slide">
+    <div class="content-wrapper">
+        <div class="section-badge" data-i18n="badge.compare">⚖️ Compare</div>
+        <h2 data-i18n="compare.h2">Candidate Comparison</h2>
+        <p data-i18n="compare.p">Compare candidates side-by-side on the issues that matter most to you. Use the filter to focus on a specific topic.</p>
+
+        <div class="compare-filter-row">
+            <label for="issueFilter" class="filter-label" data-i18n="compare.filter">Filter by Issue:</label>
+            <select id="issueFilter" class="filter-select" onchange="filterComparison()">
+                <option value="all" data-i18n="compare.all">All Issues</option>
+                <option value="economy" data-i18n="compare.economy">Economy</option>
+                <option value="healthcare" data-i18n="compare.healthcare">Healthcare</option>
+                <option value="education" data-i18n="compare.education">Education</option>
+                <option value="environment" data-i18n="compare.environment">Environment</option>
+                <option value="infrastructure" data-i18n="compare.infra">Infrastructure</option>
+            </select>
+        </div>
+
+        <div class="compare-table-wrapper">
+            <table class="compare-table" id="compareTable">
+                <thead>
+                    <tr>
+                        <th class="issue-col">Issue</th>
+                        <th class="cand-col cand-a">🔵 Candidate A</th>
+                        <th class="cand-col cand-b">🟢 Candidate B</th>
+                        <th class="cand-col cand-c">🟠 Candidate C</th>
+                    </tr>
+                </thead>
+                <tbody id="compareBody">
+                    <!-- Injected by JS -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="nav-buttons">
+            <button onclick="navigate('tracker')"    class="nav-btn" data-i18n="btn.back">← Back</button>
+            <button onclick="navigate('dosanddonts')" class="cta-btn" data-i18n="btn.next.guide">Next: Voter Guide →</button>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION 7 — VOTER GUIDE (Dos & Don'ts + Fake News)
+══════════════════════════════════════════ -->
+<section id="dosanddonts" class="slide">
+    <div class="content-wrapper">
+        <div class="panel-header-row">
+            <div><div class="section-badge" data-i18n="badge.guide">Guidelines</div><h2 data-i18n="guide.h2">Voter Guide</h2></div>
+            <span class="panel-tag" data-i18n="tag.compare">Your Voting Guidelines</span>
+        </div>
+
+        <div class="grid-container">
+            <div class="card card-pros">
+                <div class="card-icon-row"><span class="card-icon">✅</span><h3 data-i18n="pros.h3">Pros of Voting</h3></div>
+                <ul>
+                    <li data-i18n="pros.1">Shape your community's future</li>
+                    <li data-i18n="pros.2">Hold elected officials accountable</li>
+                    <li data-i18n="pros.3">Impact policies on health, education &amp; economy</li>
+                    <li data-i18n="pros.4">Exercise your fundamental democratic right</li>
+                </ul>
+            </div>
+            <div class="card card-cons">
+                <div class="card-icon-row"><span class="card-icon">⚠️</span><h3 data-i18n="cons.h3">Cons / Challenges</h3></div>
+                <ul>
+                    <li data-i18n="cons.1">Time-consuming process (lines, research)</li>
+                    <li data-i18n="cons.2">Information overload and misinformation</li>
+                    <li data-i18n="cons.3">Feeling like one vote doesn't matter (it does!)</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="warning-section">
+            <div class="card-icon-row"><span class="card-icon">🚫</span><h3 data-i18n="dont.h3">What NOT to Do as a Voter</h3></div>
+            <ul class="dont-list">
+                <li data-i18n="dont.1">❌ <strong>Don't rely on a single source of news.</strong> Verify from multiple credible sources.</li>
+                <li data-i18n="dont.2">❌ <strong>Don't skip local elections.</strong> Local officials have the most direct impact on daily life.</li>
+                <li data-i18n="dont.3">❌ <strong>Don't share unverified information.</strong> Stop the spread of fake news on social media.</li>
+                <li data-i18n="dont.4">❌ <strong>Don't wait until the last minute.</strong> Register early and know your ID requirements.</li>
+                <li data-i18n="dont.5">❌ <strong>Don't let apathy win.</strong> Your vote adds to the mandate and shapes party platforms.</li>
+            </ul>
+        </div>
+
+        <!-- Fake News Checker -->
+        <div class="fakenews-section">
+            <div class="card-icon-row"><span class="card-icon">🔍</span><h3 data-i18n="fn.h3">Fake News Checker</h3></div>
+            <p style="margin-bottom:1rem;" data-i18n="fn.p">If a piece of news has any of these red flags, be very sceptical before sharing it:</p>
+            <ul class="fakenews-list" id="fakeNewsList">
+                <li><label><input type="checkbox" onchange="updateFakeNewsScore()"> <span data-i18n="fn.1">The headline uses ALL CAPS or excessive exclamation marks</span></label></li>
+                <li><label><input type="checkbox" onchange="updateFakeNewsScore()"> <span data-i18n="fn.2">No author name or publishing date is mentioned</span></label></li>
+                <li><label><input type="checkbox" onchange="updateFakeNewsScore()"> <span data-i18n="fn.3">The website URL looks misspelled or unusual</span></label></li>
+                <li><label><input type="checkbox" onchange="updateFakeNewsScore()"> <span data-i18n="fn.4">The story only appears on one unknown website</span></label></li>
+                <li><label><input type="checkbox" onchange="updateFakeNewsScore()"> <span data-i18n="fn.5">Images look altered or are taken out of context</span></label></li>
+                <li><label><input type="checkbox" onchange="updateFakeNewsScore()"> <span data-i18n="fn.6">The story triggers extreme anger or fear</span></label></li>
+                <li><label><input type="checkbox" onchange="updateFakeNewsScore()"> <span data-i18n="fn.7">No credible experts or official sources are cited</span></label></li>
+            </ul>
+            <div class="fakenews-result" id="fakeNewsResult"></div>
+        </div>
+
+        <div class="nav-buttons">
+            <button onclick="navigate('comparison')" class="nav-btn" data-i18n="btn.back">← Back</button>
+            <button onclick="navigate('intro')"      class="cta-btn" data-i18n="btn.start.over">↩ Start Over</button>
+        </div>
+    </div>
+</section>
+
+</main>
+
+<!-- Confetti Canvas -->
+<canvas id="confettiCanvas"></canvas>
+
+<!-- ── Chatbot Widget ── -->
+<div class="chatbot-wrapper" id="chatbotWrapper">
+    <div class="chatbot-window" id="chatbotWindow">
+        <div class="chat-header">
+            <div class="chat-header-left">
+                <div class="chat-avatar">🗳️</div>
+                <div>
+                    <div class="chat-title-text" id="chatTitleText" data-i18n="bot.title">VoteBot</div>
+                    <div class="chat-status">🟢 Online — Ask me anything!</div>
+                </div>
+            </div>
+            <button class="chat-close-btn" onclick="toggleChat()" aria-label="Close chat">✕</button>
+        </div>
+        <div class="chat-messages" id="chatMessages"></div>
+        <div class="quick-questions" id="quickQuestions">
+            <!-- Chips injected by JS -->
+        </div>
+        <div class="chat-input-row">
+            <input type="text" id="chatInput" class="chat-input" data-i18n-placeholder="bot.placeholder" placeholder="Ask a question..." onkeydown="if(event.key==='Enter') sendChat()">
+            <button class="chat-send-btn" onclick="sendChat()" aria-label="Send">➤</button>
+        </div>
+    </div>
+    <button class="chatbot-toggle-btn" id="chatToggleBtn" onclick="toggleChat()" aria-label="Open chat">
+        💬
+        <span class="chat-badge" id="chatBadge">1</span>
+    </button>
+</div>
+
+<!-- Step Detail Modal -->
+<div id="detailsModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-backdrop" onclick="closeModal()"></div>
+    <div class="modal-content">
+        <button class="close-btn" onclick="closeModal()" aria-label="Close">✕</button>
+        <h3 id="modalTitle">Step Title</h3>
+        <p  id="modalDescription">Step description goes here.</p>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
