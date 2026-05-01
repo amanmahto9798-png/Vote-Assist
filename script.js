@@ -621,4 +621,381 @@ document.addEventListener('DOMContentLoaded', () => {
     updateUI(); // This calls buildQuiz and builds comparison
     buildComparison();
     loadTracker();
+    initVerification();
 });
+
+/* ─── SMART VERIFICATION SYSTEM LOGIC ────────────────── */
+const VOTED_LIST_KEY = 'voteassist-voted-list';
+let currentVoterId = '';
+
+function initVerification() {
+    const fingerBtn = document.getElementById('fingerBtn');
+    if (!fingerBtn) return;
+
+    let scanTimer;
+    const scanner = document.getElementById('fingerScanner');
+
+    fingerBtn.addEventListener('mousedown', () => {
+        scanner.classList.add('scanning');
+        scanTimer = setTimeout(() => {
+            scanner.classList.remove('scanning');
+            scanner.innerHTML = '<span class="finger-icon">✅</span>';
+            setTimeout(() => {
+                showVerifyStep(3);
+                sendFakeOtp();
+            }, 800);
+        }, 2000);
+    });
+
+    fingerBtn.addEventListener('mouseup', () => {
+        if (scanTimer) {
+            clearTimeout(scanTimer);
+            scanner.classList.remove('scanning');
+        }
+    });
+
+    fingerBtn.addEventListener('mouseleave', () => {
+        if (scanTimer) {
+            clearTimeout(scanTimer);
+            scanner.classList.remove('scanning');
+        }
+    });
+}
+
+function showVerifyStep(step) {
+    document.querySelectorAll('.verify-step').forEach(s => s.classList.remove('active'));
+    const target = document.getElementById(`vstep-${step}`);
+    if (target) target.classList.add('active');
+    
+    const result = document.getElementById('verifyResult');
+    if (result) result.style.display = step === 'result' ? 'block' : 'none';
+}
+
+window.checkVoterId = function() {
+    const input = document.getElementById('voterIdInput');
+    const vid = input.value.trim().toUpperCase();
+    
+    if (vid.length < 10) {
+        alert(getTranslation('verify.invalid'));
+        return;
+    }
+
+    const votedList = JSON.parse(localStorage.getItem(VOTED_LIST_KEY) || '[]');
+    if (votedList.includes(vid)) {
+        showVerificationResult('error', getTranslation('verify.duplicate'));
+        return;
+    }
+
+    currentVoterId = vid;
+    showVerifyStep(2);
+};
+
+window.simulateFaceScan = function() {
+    const scanner = document.getElementById('faceScanner');
+    scanner.classList.add('scanning');
+    
+    setTimeout(() => {
+        scanner.classList.remove('scanning');
+        scanner.innerHTML = '<span class="face-icon">✅</span>';
+        setTimeout(() => {
+            showVerifyStep(3);
+            sendFakeOtp();
+        }, 800);
+    }, 1500);
+};
+
+function sendFakeOtp() {
+    // Just a simulation
+    console.log("OTP Sent: 123456");
+}
+
+window.verifyOtp = function() {
+    const otp = document.getElementById('otpInput').value;
+    if (otp === '123456' || otp.length === 6) { // Accept 123456 or any 6 digits for simulation
+        const votedList = JSON.parse(localStorage.getItem(VOTED_LIST_KEY) || '[]');
+        votedList.push(currentVoterId);
+        localStorage.setItem(VOTED_LIST_KEY, JSON.stringify(votedList));
+        
+        showVerificationResult('success', getTranslation('verify.success'));
+        launchConfetti();
+    } else {
+        alert("Invalid OTP. Try 123456");
+    }
+};
+
+function showVerificationResult(type, message) {
+    showVerifyStep('result');
+    const res = document.getElementById('verifyResult');
+    res.className = `verify-result ${type}`;
+    document.getElementById('vResultIcon').textContent = type === 'success' ? '✅' : '🚫';
+    document.getElementById('vResultTitle').textContent = type === 'success' ? 'Success' : 'Alert';
+    document.getElementById('vResultText').textContent = message;
+}
+
+window.resetVerification = function() {
+    document.getElementById('voterIdInput').value = '';
+    document.getElementById('otpInput').value = '';
+    document.getElementById('fingerScanner').innerHTML = '<div class="scan-line"></div><span class="finger-icon">☝️</span>';
+    document.getElementById('faceScanner').innerHTML = '<div class="scan-circle"></div><span class="face-icon">👤</span>';
+    showVerifyStep(1);
+};
+
+/* ─── AI FRAUD DETECTION LOGIC ────────────────────────── */
+window.runFraudScan = function() {
+    const btn = document.getElementById('scanBtn');
+    const log = document.getElementById('fraudLog');
+    const reasoning = document.getElementById('fraudReasoning');
+    const statusText = document.getElementById('fraudStatusText');
+    const statusDot = document.getElementById('fraudStatusDot');
+    const alertBox = document.getElementById('fraudAlertBox');
+
+    // Reset UI
+    btn.disabled = true;
+    log.innerHTML = `<div class="log-entry system">[${new Date().toLocaleTimeString()}] Integrity monitor initialized...</div>`;
+    reasoning.innerHTML = '<div class="placeholder-text">Analyzing stream...</div>';
+    statusText.textContent = getTranslation('fraud.status.scanning');
+    statusDot.classList.add('pulse');
+    statusDot.classList.remove('alert');
+    alertBox.style.display = 'none';
+
+    const steps = [
+        { msg: "Connecting to centralized election server...", type: "system", delay: 800 },
+        { msg: "Fetching real-time voting streams (Booths 1-1000)...", type: "process", delay: 1200 },
+        { msg: "Applying Bayesian pattern recognition...", type: "process", delay: 1500 },
+        { msg: "Cross-referencing biometric logs with Voter ID database...", type: "process", delay: 1000 },
+        { msg: "WARNING: High frequency delta detected in Cluster 4!", type: "warn", delay: 1800 },
+        { msg: "ANOMALY FOUND: Identity collision in Booth #104 & #892", type: "danger", delay: 1200 },
+        { msg: "CRITICAL: Unusual throughput spike in Booth #402", type: "danger", delay: 1000 }
+    ];
+
+    let currentDelay = 0;
+    steps.forEach((step, index) => {
+        currentDelay += step.delay;
+        setTimeout(() => {
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${step.type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${step.msg}`;
+            log.appendChild(entry);
+            log.scrollTop = log.scrollHeight;
+
+            if (index === steps.length - 1) {
+                finalizeFraudScan();
+            }
+        }, currentDelay);
+    });
+};
+
+function finalizeFraudScan() {
+    const statusText = document.getElementById('fraudStatusText');
+    const statusDot = document.getElementById('fraudStatusDot');
+    const reasoning = document.getElementById('fraudReasoning');
+    const alertBox = document.getElementById('fraudAlertBox');
+    const btn = document.getElementById('scanBtn');
+
+    statusText.textContent = getTranslation('fraud.status.alert');
+    statusDot.classList.remove('pulse');
+    statusDot.classList.add('alert');
+    btn.disabled = false;
+
+    // AI Reasoning UI
+    reasoning.innerHTML = `
+        <div class="reason-box">
+            <span class="type">${getTranslation('fraud.type.multiple')}</span>
+            <p>${getTranslation('fraud.reason.multiple')}</p>
+        </div>
+        <div class="reason-box">
+            <span class="type">${getTranslation('fraud.type.spike')}</span>
+            <p>${getTranslation('fraud.reason.spike')}</p>
+        </div>
+    `;
+
+    // Alert UI
+    document.getElementById('alertType').textContent = getTranslation('fraud.type.spike');
+    document.getElementById('alertDesc').textContent = getTranslation('fraud.desc.spike');
+    document.getElementById('fraudAlertBox').style.display = 'block';
+
+    setTimeout(() => {
+        document.getElementById('fraudAlertBox').style.display = 'none';
+    }, 6000);
+}
+
+/* ─── ADMIN DASHBOARD LOGIC ────────────────────────── */
+let adminChart = null;
+
+function initAdminDashboard() {
+    renderBoothTable();
+    renderAdminChart();
+    
+    // Live update loop
+    setInterval(updateAdminStats, 3000);
+}
+
+function renderBoothTable() {
+    const body = document.getElementById('boothStatusBody');
+    if (!body) return;
+    
+    const booths = [
+        { id: 'B-101', loc: 'Patna Central', load: 45, status: 'active' },
+        { id: 'B-402', loc: 'Gaya North', load: 92, status: 'alert' },
+        { id: 'B-205', loc: 'Muzaffarpur', load: 78, status: 'busy' },
+        { id: 'B-112', loc: 'Bhagalpur', load: 30, status: 'active' },
+        { id: 'B-501', loc: 'Darbhanga', load: 65, status: 'busy' }
+    ];
+
+    body.innerHTML = booths.map(b => `
+        <tr>
+            <td><strong>${b.id}</strong></td>
+            <td>${b.loc}</td>
+            <td>
+                <div class="load-bar-wrap"><div class="load-bar-fill" style="width: ${b.load}%"></div></div>
+            </td>
+            <td><span class="status-badge ${b.status}">${b.status}</span></td>
+        </tr>
+    `).join('');
+}
+
+function renderAdminChart() {
+    const canvas = document.getElementById('boothActivityChart');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    adminChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00'],
+            datasets: [{
+                label: 'Votes / Hr',
+                data: [1200, 1900, 3000, 2500, 2200, 2800],
+                backgroundColor: 'rgba(38, 166, 154, 0.6)',
+                borderColor: '#26a69a',
+                borderWidth: 1,
+                borderRadius: 5
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' } },
+                x: { grid: { display: false } }
+            }
+        }
+    });
+}
+
+function updateAdminStats() {
+    // Randomly update numbers to simulate real-time data
+    const verified = document.getElementById('stat-verified');
+    if (!verified) return;
+
+    let val = parseInt(verified.textContent.replace(/,/g, ''));
+    val += Math.floor(Math.random() * 10);
+    verified.textContent = val.toLocaleString();
+
+    // Update chart with new data point occasionally
+    if (adminChart) {
+        const newData = adminChart.data.datasets[0].data;
+        newData[newData.length - 1] += Math.floor(Math.random() * 20);
+        adminChart.update('none');
+    }
+}
+
+// Update DOMContentLoaded to include admin init
+document.addEventListener('DOMContentLoaded', () => {
+    updateUI(); 
+    buildComparison();
+    loadTracker();
+    initVerification();
+    initAdminDashboard();
+});
+
+/* ─── EDGE CASE HANDLING LOGIC ─────────────────────── */
+let forceScanFailure = false;
+let isOffline = false;
+
+window.simulateScanFailure = function() {
+    forceScanFailure = true;
+    alert("Simulation: Next biometric scan will fail.");
+};
+
+window.toggleNetwork = function() {
+    isOffline = !isOffline;
+    const banner = document.getElementById('offlineBanner');
+    banner.style.display = isOffline ? 'block' : 'none';
+};
+
+window.requestManualAssist = function() {
+    showModal(getTranslation('verify.manual.btn'), getTranslation('verify.manual.msg'));
+    
+    // In a real system, this would alert an official. 
+    // Here we simulate successful manual verification after 3s.
+    setTimeout(() => {
+        const title = document.getElementById('vResultTitle');
+        const text = document.getElementById('vResultText');
+        const icon = document.getElementById('vResultIcon');
+        
+        title.textContent = "Manual Success";
+        text.textContent = "Official has verified your documents.";
+        icon.textContent = "📑✅";
+        
+        showVerifyStep('result');
+        saveVoted(currentVoterId);
+    }, 3000);
+};
+
+// Modify existing initVerification to handle forced failure
+const originalInitVerification = window.initVerification;
+window.initVerification = function() {
+    const fingerBtn = document.getElementById('fingerBtn');
+    if (!fingerBtn) return;
+
+    let holdTimer;
+    fingerBtn.onmousedown = () => {
+        document.getElementById('fingerScanner').classList.add('scanning');
+        holdTimer = setTimeout(() => {
+            document.getElementById('fingerScanner').classList.remove('scanning');
+            
+            if (forceScanFailure) {
+                forceScanFailure = false; // reset
+                alert(getTranslation('verify.mismatch'));
+                showVerifyStep(3); // Fallback to OTP
+            } else {
+                showVerifyStep(3);
+            }
+        }, 2000);
+    };
+
+    fingerBtn.onmouseup = () => {
+        clearTimeout(holdTimer);
+        document.getElementById('fingerScanner').classList.remove('scanning');
+    };
+
+    // Mobile support
+    fingerBtn.ontouchstart = fingerBtn.onmousedown;
+    fingerBtn.ontouchend = fingerBtn.onmouseup;
+};
+
+/* ─── PRIVACY & ETHICS LOGIC ───────────────────────── */
+window.startVerifiedFlow = function() {
+    const consent = document.getElementById('privacyConsent');
+    if (!consent.checked) {
+        alert("Please provide your consent to continue.");
+        return;
+    }
+    showVerifyStep(1);
+};
+
+// Override resetVerification to go back to consent step
+const originalResetVerification = window.resetVerification;
+window.resetVerification = function() {
+    document.getElementById('voterIdInput').value = '';
+    document.getElementById('otpInput').value = '';
+    document.getElementById('privacyConsent').checked = false;
+    
+    // Clear simulation flags
+    forceScanFailure = false;
+    
+    document.getElementById('faceScanner').innerHTML = '<div class="scan-circle"></div><span class="face-icon">👤</span>';
+    showVerifyStep(0); // Back to consent
+};

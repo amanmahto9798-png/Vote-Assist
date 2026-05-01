@@ -33,6 +33,9 @@
         <li><a href="#timeline"    id="nav-timeline"    data-i18n="nav.timeline">Timeline</a></li>
         <li><a href="#quiz"        id="nav-quiz"        data-i18n="nav.quiz">Quiz</a></li>
         <li><a href="#tracker"     id="nav-tracker"     data-i18n="nav.tracker">Tracker</a></li>
+        <li><a href="#verification" id="nav-verify"     data-i18n="nav.verify">Verification</a></li>
+        <li><a href="#fraud"        id="nav-fraud"      data-i18n="nav.fraud">Fraud Detection</a></li>
+        <li><a href="#admin"        id="nav-admin"      data-i18n="nav.admin">Admin</a></li>
         <li><a href="#comparison"  id="nav-comparison"  data-i18n="nav.compare">Compare</a></li>
         <li><a href="#dosanddonts" id="nav-guide"       data-i18n="nav.guide">Voter Guide</a></li>
     </ul>
@@ -61,6 +64,9 @@
     <a href="#timeline"    onclick="closeMobileMenu()" data-i18n="mob.timeline">📊 Timeline</a>
     <a href="#quiz"        onclick="closeMobileMenu()" data-i18n="mob.quiz">🧠 Quiz</a>
     <a href="#tracker"     onclick="closeMobileMenu()" data-i18n="mob.tracker">✅ Tracker</a>
+    <a href="#verification" onclick="closeMobileMenu()" data-i18n="mob.verify">🔒 Verify</a>
+    <a href="#fraud"        onclick="closeMobileMenu()" data-i18n="mob.fraud">🛡️ Fraud Detect</a>
+    <a href="#admin"        onclick="closeMobileMenu()" data-i18n="mob.admin">📊 Admin</a>
     <a href="#comparison"  onclick="closeMobileMenu()" data-i18n="mob.compare">⚖️ Compare</a>
     <a href="#dosanddonts" onclick="closeMobileMenu()" data-i18n="mob.guide">📖 Voter Guide</a>
 </div>
@@ -231,7 +237,7 @@
 
         <div class="nav-buttons">
             <button onclick="navigate('timeline')" class="nav-btn" data-i18n="btn.back">← Back</button>
-            <button onclick="navigate('tracker')"  class="cta-btn" data-i18n="btn.next.tracker">Next: Tracker →</button>
+            <button onclick="navigate('tracker')"  class="cta-btn" data-i18n="btn.next.tracker">Next: Voter Journey →</button>
         </div>
     </div>
 </section>
@@ -241,9 +247,9 @@
 ══════════════════════════════════════════ -->
 <section id="tracker" class="slide">
     <div class="content-wrapper">
-        <div class="section-badge" data-i18n="badge.tracker">✅ Tracker</div>
-        <h2 data-i18n="tracker.h2">My Voter Progress Tracker</h2>
-        <p data-i18n="tracker.p">Check off each step as you complete it. Your progress is saved automatically in this browser.</p>
+        <div class="section-badge" data-i18n="badge.tracker">🗺️ Voter Journey</div>
+        <h2 data-i18n="tracker.h2">My Voter Journey</h2>
+        <p data-i18n="tracker.p">Follow your journey through the digital voting process.</p>
 
         <div class="tracker-progress-row">
             <div class="tracker-bar-wrap">
@@ -253,20 +259,259 @@
         </div>
 
         <ul class="tracker-list" id="trackerList">
-            <li data-key="t1"><label><input type="checkbox" id="t1" onchange="updateTracker()"> <span data-i18n="track.1">Checked my voter registration status</span></label></li>
-            <li data-key="t2"><label><input type="checkbox" id="t2" onchange="updateTracker()"> <span data-i18n="track.2">Found my polling station location</span></label></li>
-            <li data-key="t3"><label><input type="checkbox" id="t3" onchange="updateTracker()"> <span data-i18n="track.3">Researched candidates and their platforms</span></label></li>
-            <li data-key="t4"><label><input type="checkbox" id="t4" onchange="updateTracker()"> <span data-i18n="track.4">Understood the key ballot issues</span></label></li>
-            <li data-key="t5"><label><input type="checkbox" id="t5" onchange="updateTracker()"> <span data-i18n="track.5">Prepared valid photo ID for polling day</span></label></li>
-            <li data-key="t6"><label><input type="checkbox" id="t6" onchange="updateTracker()"> <span data-i18n="track.6">Planned my travel to the polling station</span></label></li>
-            <li data-key="t7"><label><input type="checkbox" id="t7" onchange="updateTracker()"> <span data-i18n="track.7">Confirmed polling station hours</span></label></li>
-            <li data-key="t8"><label><input type="checkbox" id="t8" onchange="updateTracker()"> <span data-i18n="track.8">Voted! 🗳️</span></label></li>
+            <li data-key="t1"><label><input type="checkbox" id="t1" onchange="updateTracker()"> <span data-i18n="track.1">Find your Voter ID (EPIC)</span></label></li>
+            <li data-key="t2"><label><input type="checkbox" id="t2" onchange="updateTracker()"> <span data-i18n="track.2">Locate your polling booth</span></label></li>
+            <li data-key="t3"><label><input type="checkbox" id="t3" onchange="updateTracker()"> <span data-i18n="track.3">Research candidates & platforms</span></label></li>
+            <li data-key="t4"><label><input type="checkbox" id="t4" onchange="updateTracker()"> <span data-i18n="track.4">User opens platform (Start Simulation)</span></label></li>
+            <li data-key="t5"><label><input type="checkbox" id="t5" onchange="updateTracker()"> <span data-i18n="track.5">Selects “Start Voting Simulation”</span></label></li>
+            <li data-key="t6"><label><input type="checkbox" id="t6" onchange="updateTracker()"> <span data-i18n="track.6">Enters Voter ID in system</span></label></li>
+            <li data-key="t7"><label><input type="checkbox" id="t7" onchange="updateTracker()"> <span data-i18n="track.7">Clicks “Scan Fingerprint”</span></label></li>
+            <li data-key="t8"><label><input type="checkbox" id="t8" onchange="updateTracker()"> <span data-i18n="track.8">System verifies identity</span></label></li>
+            <li data-key="t9"><label><input type="checkbox" id="t9" onchange="updateTracker()"> <span data-i18n="track.9">If valid → “Vote Allowed”</span></label></li>
+            <li data-key="t10"><label><input type="checkbox" id="t10" onchange="updateTracker()"> <span data-i18n="track.10">If duplicate → “Alert: Already Voted”</span></label></li>
+            <li data-key="t11"><label><input type="checkbox" id="t11" onchange="updateTracker()"> <span data-i18n="track.11">If failed → OTP/Manual verification</span></label></li>
+            <li data-key="t12"><label><input type="checkbox" id="t12" onchange="updateTracker()"> <span data-i18n="track.12">Final confirmation & Vote cast</span></label></li>
         </ul>
 
-        <button class="nav-btn" onclick="resetTracker()" style="margin-top:1rem;" data-i18n="tracker.reset">🔄 Reset Tracker</button>
+        <button class="nav-btn" onclick="resetTracker()" style="margin-top:1rem;" data-i18n="tracker.reset">🔄 Reset Journey</button>
 
         <div class="nav-buttons">
             <button onclick="navigate('quiz')"       class="nav-btn" data-i18n="btn.back">← Back</button>
+            <button onclick="navigate('verification')" class="cta-btn" data-i18n="btn.next.verify">Next: Verify →</button>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION 5.5 — SMART VERIFICATION
+══════════════════════════════════════════ -->
+<section id="verification" class="slide">
+    <div class="content-wrapper">
+        <div class="section-badge" data-i18n="badge.verify">🔒 Verification</div>
+        <h2 data-i18n="verify.h2">Smart Voting Verification</h2>
+        <p data-i18n="verify.p">Experience a simulation of a modern, multi-factor voter authentication system.</p>
+
+        <!-- Offline Banner -->
+        <div id="offlineBanner" class="offline-banner" style="display:none;">
+            <div class="offline-content">
+                <span class="offline-icon">📡❌</span>
+                <div>
+                    <h4 data-i18n="verify.offline.title">Offline Mode Active</h4>
+                    <p data-i18n="verify.offline.p">Network connection lost. Data will be locally encrypted and synced when online.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="verification-container" id="verifyContainer">
+            <!-- Step 0: Consent -->
+            <div class="verify-step active" id="vstep-0">
+                <h3 data-i18n="privacy.consent.title">Privacy Consent & Data Safety</h3>
+                <p data-i18n="privacy.consent.p">By proceeding, you consent to the simulation of biometric verification. We do not store raw biometric data.</p>
+                
+                <div class="safety-info-panel">
+                    <h4 data-i18n="privacy.safety.title">How Your Data is Protected</h4>
+                    <ul>
+                        <li data-i18n="privacy.safety.1">🚫 No Raw Biometrics: Your fingerprint/face is converted into a mathematical hash instantly.</li>
+                        <li data-i18n="privacy.safety.2">🔐 End-to-End Encryption: Verification logs are encrypted using AES-256 before transmission.</li>
+                        <li data-i18n="privacy.safety.3">📅 Auto-Purge: All session data is cleared immediately after the voting cycle ends.</li>
+                    </ul>
+                </div>
+
+                <div class="consent-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="privacyConsent">
+                        <span data-i18n="privacy.consent.check">I understand that my biometric data is hashed and encrypted locally.</span>
+                    </label>
+                    <button class="cta-btn" onclick="startVerifiedFlow()" data-i18n="privacy.btn.start">Agree & Start Simulation</button>
+                </div>
+            </div>
+
+            <!-- Step 1: Voter ID -->
+            <div class="verify-step" id="vstep-1">
+                <h3 data-i18n="verify.step1">Step 1: Enter Voter ID</h3>
+                <div class="input-group">
+                    <label data-i18n="verify.vid.label">Enter your 10-digit Voter ID (EPIC):</label>
+                    <input type="text" id="voterIdInput" data-i18n-placeholder="verify.vid.placeholder" placeholder="e.g. ABC1234567" maxlength="10">
+                    <button class="cta-btn" onclick="checkVoterId()" data-i18n="verify.btn.check">Check ID</button>
+                </div>
+            </div>
+
+            <!-- Step 2: Biometric -->
+            <div class="verify-step" id="vstep-2">
+                <h3 data-i18n="verify.step2">Step 2: Biometric Scan</h3>
+                <div class="biometric-grid">
+                    <div class="bio-card">
+                        <label data-i18n="verify.finger.label">Simulate Fingerprint Scan</label>
+                        <div class="fingerprint-scanner" id="fingerScanner">
+                            <div class="scan-line"></div>
+                            <span class="finger-icon">☝️</span>
+                        </div>
+                        <button class="cta-btn bio-btn" id="fingerBtn" data-i18n="verify.finger.btn">Press & Hold</button>
+                    </div>
+                    <div class="bio-card">
+                        <label data-i18n="verify.face.label">Face Recognition (Optional)</label>
+                        <div class="face-scanner" id="faceScanner">
+                            <div class="scan-circle"></div>
+                            <span class="face-icon">👤</span>
+                        </div>
+                        <button class="cta-btn bio-btn" onclick="simulateFaceScan()" data-i18n="verify.face.btn">Capture Face</button>
+                    </div>
+                </div>
+
+                <!-- Edge Case: Manual Override for Elderly -->
+                <div class="manual-override">
+                    <p data-i18n="verify.elderly">Elderly/Disabled? Request Manual Override</p>
+                    <button class="text-link-btn" onclick="requestManualAssist()" data-i18n="verify.manual.btn">Request Manual Assist</button>
+                </div>
+            </div>
+
+            <!-- Step 3: OTP Fallback -->
+            <div class="verify-step" id="vstep-3">
+                <h3 data-i18n="verify.step3">Step 3: OTP Verification</h3>
+                <p class="otp-info" data-i18n="verify.otp.sent">OTP sent to registered mobile number!</p>
+                <div class="input-group">
+                    <input type="text" id="otpInput" data-i18n-placeholder="verify.otp.placeholder" placeholder="Enter 6-digit OTP" maxlength="6">
+                    <button class="cta-btn" onclick="verifyOtp()" data-i18n="verify.btn.verify">Verify & Proceed</button>
+                </div>
+            </div>
+
+            <!-- Result -->
+            <div class="verify-result" id="verifyResult" style="display:none;">
+                <div class="result-icon" id="vResultIcon">✅</div>
+                <h3 id="vResultTitle">Success!</h3>
+                <p id="vResultText">Verification complete.</p>
+                <button class="nav-btn" onclick="resetVerification()" data-i18n="verify.retry">Retry</button>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <button onclick="navigate('tracker')"    class="nav-btn" data-i18n="btn.back">← Back</button>
+            <div class="edge-case-controls">
+                <button class="mini-btn" onclick="simulateScanFailure()" data-i18n="verify.btn.fail">Simulate Fail</button>
+                <button class="mini-btn" onclick="toggleNetwork()" data-i18n="verify.btn.network">Net Loss</button>
+            </div>
+            <button onclick="navigate('fraud')"      class="cta-btn" data-i18n="btn.next.fraud">Next: Fraud Detect →</button>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION 5.6 — AI FRAUD DETECTION
+══════════════════════════════════════════ -->
+<section id="fraud" class="slide">
+    <div class="content-wrapper">
+        <div class="section-badge" data-i18n="fraud.badge">🛡️ Integrity Guard</div>
+        <h2 data-i18n="fraud.h2">AI Fraud Detection System</h2>
+        <p data-i18n="fraud.p">Monitoring electoral integrity using real-time anomaly detection and pattern analysis.</p>
+
+        <div class="fraud-dashboard">
+            <div class="fraud-top-bar">
+                <div class="system-status">
+                    <span class="status-dot pulse" id="fraudStatusDot"></span>
+                    <span id="fraudStatusText" data-i18n="fraud.status.idle">System ready for scan...</span>
+                </div>
+                <button class="cta-btn" onclick="runFraudScan()" id="scanBtn" data-i18n="fraud.btn.scan">Run Integrity Scan</button>
+            </div>
+
+            <div class="fraud-grid">
+                <!-- Live Log Feed -->
+                <div class="fraud-card log-card">
+                    <h3 data-i18n="fraud.log.title">Security Log Feed</h3>
+                    <div class="log-container" id="fraudLog">
+                        <div class="log-entry system">[SYSTEM] Integrity monitor initialized...</div>
+                    </div>
+                </div>
+
+                <!-- Analysis / Reasoning -->
+                <div class="fraud-card analysis-card">
+                    <h3 data-i18n="fraud.reasoning.title">AI Reasoning</h3>
+                    <div id="fraudReasoning" class="reasoning-content">
+                        <div class="placeholder-text">Waiting for data analysis...</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Alerts Overlay (Hidden by default) -->
+            <div class="fraud-alert-box" id="fraudAlertBox" style="display:none;">
+                <div class="alert-header">
+                    <span class="alert-icon">⚠️</span>
+                    <h4 data-i18n="fraud.status.alert">ANOMALY DETECTED!</h4>
+                </div>
+                <div class="alert-body">
+                    <div id="alertType" class="alert-type"></div>
+                    <div id="alertDesc" class="alert-desc"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <button onclick="navigate('verification')" class="nav-btn" data-i18n="btn.back">← Back</button>
+            <button onclick="navigate('admin')"        class="cta-btn" data-i18n="btn.next.admin">Next: Admin Dashboard →</button>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION 5.7 — ADMIN DASHBOARD
+══════════════════════════════════════════ -->
+<section id="admin" class="slide">
+    <div class="content-wrapper">
+        <div class="section-badge" data-i18n="mob.admin">📊 Admin Dashboard</div>
+        <h2 data-i18n="admin.h2">Admin Command Center</h2>
+        <p data-i18n="admin.p">Real-time visualization of election integrity and voter participation metrics.</p>
+
+        <div class="admin-grid">
+            <!-- Stats Row -->
+            <div class="admin-stats-row">
+                <div class="stat-card">
+                    <span class="stat-value" id="stat-verified">4,281,092</span>
+                    <span class="stat-label" data-i18n="admin.stat.verified">Total Verified</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value text-danger" id="stat-duplicates">12,403</span>
+                    <span class="stat-label" data-i18n="admin.stat.duplicates">Duplicates Blocked</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value text-warn" id="stat-alerts">8</span>
+                    <span class="stat-label" data-i18n="admin.stat.alerts">Active Alerts</span>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-value text-success" id="stat-booths">98.2%</span>
+                    <span class="stat-label" data-i18n="admin.stat.booths">Online Booths</span>
+                </div>
+            </div>
+
+            <!-- Charts & Table -->
+            <div class="admin-main-row">
+                <div class="admin-panel chart-panel">
+                    <h3 data-i18n="admin.chart.title">Booth Activity (Votes/Hr)</h3>
+                    <div class="admin-chart-container">
+                        <canvas id="boothActivityChart"></canvas>
+                    </div>
+                </div>
+                <div class="admin-panel status-panel">
+                    <h3 data-i18n="admin.booth.status">Booth Status Monitor</h3>
+                    <div class="booth-table-wrapper">
+                        <table class="booth-table">
+                            <thead>
+                                <tr>
+                                    <th>Booth ID</th>
+                                    <th>Location</th>
+                                    <th>Load</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody id="boothStatusBody">
+                                <!-- Injected by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <button onclick="navigate('fraud')"      class="nav-btn" data-i18n="btn.back">← Back</button>
             <button onclick="navigate('comparison')" class="cta-btn" data-i18n="btn.next.compare">Next: Compare →</button>
         </div>
     </div>
@@ -310,7 +555,7 @@
         </div>
 
         <div class="nav-buttons">
-            <button onclick="navigate('tracker')"    class="nav-btn" data-i18n="btn.back">← Back</button>
+            <button onclick="navigate('admin')" class="nav-btn" data-i18n="btn.back">← Back</button>
             <button onclick="navigate('dosanddonts')" class="cta-btn" data-i18n="btn.next.guide">Next: Voter Guide →</button>
         </div>
     </div>
@@ -375,7 +620,50 @@
 
         <div class="nav-buttons">
             <button onclick="navigate('comparison')" class="nav-btn" data-i18n="btn.back">← Back</button>
-            <button onclick="navigate('intro')"      class="cta-btn" data-i18n="btn.start.over">↩ Start Over</button>
+            <button onclick="navigate('mission')"    class="cta-btn" data-i18n="btn.next.mission">Next: Our Mission →</button>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION 8 — MISSION & IMPACT
+══════════════════════════════════════════ -->
+<section id="mission" class="slide">
+    <div class="content-wrapper">
+        <div class="section-badge">🌟 Our Mission</div>
+        <h2 data-i18n="mission.h2">Building Trust in Democracy</h2>
+        
+        <div class="mission-grid">
+            <div class="mission-text">
+                <p class="impact-statement" data-i18n="mission.impact">
+                    This system aims to improve transparency, reduce voter fraud, and build trust in the democratic process using AI and secure verification methods.
+                </p>
+                <div class="mission-features">
+                    <div class="m-feat">
+                        <span class="m-icon">🛡️</span>
+                        <h4 data-i18n="mission.f1.t">Secure Verification</h4>
+                        <p data-i18n="mission.f1.p">Multi-factor biometric simulation ensuring "One Person, One Vote".</p>
+                    </div>
+                    <div class="m-feat">
+                        <span class="m-icon">🤖</span>
+                        <h4 data-i18n="mission.f2.t">AI Integrity</h4>
+                        <p data-i18n="mission.f2.p">Real-time fraud detection monitoring for electoral anomalies.</p>
+                    </div>
+                    <div class="m-feat">
+                        <span class="m-icon">🎓</span>
+                        <h4 data-i18n="mission.f3.t">Voter Education</h4>
+                        <p data-i18n="mission.f3.p">Empowering citizens with knowledge through interactive journeys.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="mission-image">
+                <img src="voteshield_ai_dashboard_1777616699701.png" alt="VoteShield AI Dashboard" class="futuristic-img">
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <button onclick="navigate('dosanddonts')" class="nav-btn" data-i18n="btn.back">← Back</button>
+            <button onclick="navigate('intro')"       class="cta-btn" data-i18n="btn.start.over">↩ Start Over</button>
         </div>
     </div>
 </section>
