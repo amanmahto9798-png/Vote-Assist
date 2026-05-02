@@ -24,20 +24,25 @@
 
 <!-- ── Navigation ── -->
 <nav id="mainNav">
-    <div class="logo">🗳️ VoteAssist</div>
+    <div class="logo">
+        <span class="logo-icon">✅</span>
+        VoteAssist
+    </div>
 
     <!-- Desktop links -->
     <ul class="nav-links" id="navLinks">
-        <li><a href="#intro"       class="active" id="nav-intro"       data-i18n="nav.start">Start</a></li>
-        <li><a href="#process"     id="nav-process"     data-i18n="nav.process">Process</a></li>
-        <li><a href="#timeline"    id="nav-timeline"    data-i18n="nav.timeline">Timeline</a></li>
-        <li><a href="#quiz"        id="nav-quiz"        data-i18n="nav.quiz">Quiz</a></li>
-        <li><a href="#tracker"     id="nav-tracker"     data-i18n="nav.tracker">Tracker</a></li>
-        <li><a href="#verification" id="nav-verify"     data-i18n="nav.verify">Verification</a></li>
-        <li><a href="#fraud"        id="nav-fraud"      data-i18n="nav.fraud">Fraud Detection</a></li>
-        <li><a href="#admin"        id="nav-admin"      data-i18n="nav.admin">Admin</a></li>
-        <li><a href="#comparison"  id="nav-comparison"  data-i18n="nav.compare">Compare</a></li>
-        <li><a href="#dosanddonts" id="nav-guide"       data-i18n="nav.guide">Voter Guide</a></li>
+        <li><a href="#intro"       class="active" id="nav-intro"       data-i18n="nav.start">🏠 Start</a></li>
+        <li><a href="#process"     id="nav-process"     data-i18n="nav.process">📋 Process</a></li>
+        <li><a href="#timeline"    id="nav-timeline"    data-i18n="nav.timeline">📊 Timeline</a></li>
+        <li><a href="#quiz"        id="nav-quiz"        data-i18n="nav.quiz">🧠 Quiz</a></li>
+        <li><a href="#tracker"     id="nav-tracker"     data-i18n="nav.tracker">🗺️ Voter Journey</a></li>
+        <li><a href="#verification" id="nav-verify"     data-i18n="nav.verify">🔒 Verification</a></li>
+        <li><a href="#fraud"        id="nav-fraud"      data-i18n="nav.fraud">🛡️ Fraud Detection</a></li>
+        <li><a href="#admin"        id="nav-admin"      data-i18n="nav.admin">📊 Admin</a></li>
+        <li><a href="#comparison"  id="nav-comparison"  data-i18n="nav.compare">⚖️ Compare</a></li>
+        <li><a href="#remote-voting" id="nav-remote"     data-i18n="nav.remote">🌐 Remote Voting</a></li>
+        <li><a href="#feedback"      id="nav-feedback"   data-i18n="nav.feedback">💬 Feedback</a></li>
+        <li><a href="#dosanddonts" id="nav-guide"       data-i18n="nav.guide">📖 Voter Guide</a></li>
     </ul>
 
     <div class="nav-controls">
@@ -68,6 +73,8 @@
     <a href="#fraud"        onclick="closeMobileMenu()" data-i18n="mob.fraud">🛡️ Fraud Detect</a>
     <a href="#admin"        onclick="closeMobileMenu()" data-i18n="mob.admin">📊 Admin</a>
     <a href="#comparison"  onclick="closeMobileMenu()" data-i18n="mob.compare">⚖️ Compare</a>
+    <a href="#remote-voting" onclick="closeMobileMenu()" data-i18n="mob.remote">🌐 Remote Vote</a>
+    <a href="#feedback"      onclick="closeMobileMenu()" data-i18n="mob.feedback">💬 Feedback</a>
     <a href="#dosanddonts" onclick="closeMobileMenu()" data-i18n="mob.guide">📖 Voter Guide</a>
 </div>
 
@@ -77,62 +84,147 @@
      SECTION 1 — INTRO + COUNTDOWN
 ══════════════════════════════════════════ -->
 <section id="intro" class="slide">
-    <div class="content-wrapper">
-        <div class="section-badge" data-i18n="badge.welcome">Welcome</div>
-        <h1 data-i18n="intro.h1">Welcome to VoteAssist</h1>
-        <p data-i18n="intro.p">Your interactive guide to understanding the election process, timelines, and how to make your vote count.</p>
-
-        <!-- Countdown Timer -->
-        <div class="countdown-box">
-            <p class="countdown-label" data-i18n="countdown.label">⏳ Next Election Countdown</p>
-            <div class="countdown-grid">
-                <div class="countdown-unit"><span id="cd-days">--</span><label data-i18n="cd.days">Days</label></div>
-                <div class="countdown-sep">:</div>
-                <div class="countdown-unit"><span id="cd-hours">--</span><label data-i18n="cd.hours">Hours</label></div>
-                <div class="countdown-sep">:</div>
-                <div class="countdown-unit"><span id="cd-mins">--</span><label data-i18n="cd.mins">Mins</label></div>
-                <div class="countdown-sep">:</div>
-                <div class="countdown-unit"><span id="cd-secs">--</span><label data-i18n="cd.secs">Secs</label></div>
+    <div class="content-wrapper hero-wrapper">
+        <div class="hero-main">
+            <div class="hero-text">
+                <div class="section-badge welcome-badge" data-i18n="badge.welcome">WELCOME 👋</div>
+                <h1 class="hero-title">Welcome to <span class="accent-text">VoteAssist</span></h1>
+                <p class="hero-desc" data-i18n="intro.p">Your interactive guide to understanding the election process, timelines, and how to make your vote count.</p>
+                <div class="hero-feature">
+                    <span class="feat-icon">🛡️</span>
+                    <span class="feat-text">Enhancing transparency, security, and accessibility in elections through AI</span>
+                </div>
+                <div class="hero-btns">
+                    <button onclick="navigate('process')" class="cta-btn primary-hero-btn">🚀 Start Your Voting Journey →</button>
+                    <button onclick="navigate('features-quick')" class="nav-btn secondary-hero-btn">🔳 Explore Features</button>
+                </div>
             </div>
-            <p class="countdown-target" data-i18n="countdown.target">Target: Bihar Assembly Elections — Nov 15, 2026</p>
+            <div class="hero-image-container">
+                <img src="hero_illustration.png" alt="Election Illustration" class="hero-illustration">
+            </div>
         </div>
 
-        <button onclick="navigate('process')" class="cta-btn" id="exploreBtn" data-i18n="intro.btn">Explore the Process →</button>
+        <!-- Countdown -->
+        <div class="countdown-container">
+             <p class="countdown-header">⌛ <span data-i18n="countdown.label">Next Election Countdown</span></p>
+             <div class="countdown-grid-v2">
+                 <div class="cd-item"><div class="cd-num" id="cd-days">--</div><div class="cd-label" data-i18n="cd.days">DAYS</div></div>
+                 <div class="cd-sep">:</div>
+                 <div class="cd-item"><div class="cd-num" id="cd-hours">--</div><div class="cd-label" data-i18n="cd.hours">HOURS</div></div>
+                 <div class="cd-sep">:</div>
+                 <div class="cd-item"><div class="cd-num" id="cd-mins">--</div><div class="cd-label" data-i18n="cd.mins">MINS</div></div>
+                 <div class="cd-sep">:</div>
+                 <div class="cd-item"><div class="cd-num" id="cd-secs">--</div><div class="cd-label" data-i18n="cd.secs">SECS</div></div>
+             </div>
+             <p class="countdown-sub" data-i18n="countdown.target">Target: Bihar Assembly Elections — Nov 15, 2026</p>
+        </div>
+    </div>
+</section>
+
+<!-- New Section: Feature Cards -->
+<section id="features-quick" class="slide">
+    <div class="features-grid-section">
+        <div class="features-row">
+            <div class="feat-card" onclick="navigate('process')">
+                <div class="feat-card-icon process-icon">📖</div>
+                <h3 data-i18n="nav.process">Learn the Process</h3>
+                <p>Understand each step of the election process in simple language.</p>
+                <span class="feat-link">Explore →</span>
+            </div>
+            <div class="feat-card" onclick="navigate('verification')">
+                <div class="feat-card-icon verify-icon">🔒</div>
+                <h3 data-i18n="nav.verify">Secure & Verified Voting (Concept)</h3>
+                <p>Explore secure voting concepts with identity verification and one-person-one-vote.</p>
+                <span class="feat-link">Explore →</span>
+            </div>
+            <div class="feat-card" onclick="navigate('tracker')">
+                <div class="feat-card-icon tracker-icon">📊</div>
+                <h3 data-i18n="nav.tracker">Transparency Tracker</h3>
+                <p>Track the journey of your vote from submission to counting with full transparency.</p>
+                <span class="feat-link">Explore →</span>
+            </div>
+            <div class="feat-card" onclick="navigate('feedback')">
+                <div class="feat-card-icon feedback-icon">💬</div>
+                <h3 data-i18n="nav.feedback">Voter Feedback</h3>
+                <p>Share your experience and help us improve the election process.</p>
+                <span class="feat-link">Share Feedback →</span>
+            </div>
+        </div>
+
+
     </div>
 </section>
 
 <!-- ══════════════════════════════════════════
-     SECTION 2 — ELECTION PROCESS (Flowchart)
+     SECTION 2 — THE ELECTION PROCESS
 ══════════════════════════════════════════ -->
 <section id="process" class="slide">
     <div class="content-wrapper">
-        <div class="panel-header-row">
-            <div><div class="section-badge" data-i18n="badge.flowchart">Flowchart</div><h2 data-i18n="process.h2">The Election Process</h2></div>
-            <span class="panel-tag" data-i18n="tag.flowchart">Interactive — click any step</span>
-        </div>
-        <p data-i18n="process.p">Follow the flowchart to understand the key steps in democratic elections. Click any node to learn more.</p>
-        <div class="mermaid-container">
-            <div class="mermaid">
-                graph TD
-                    A[Citizen Registers to Vote] --> B[Check Electoral Roll]
-                    B --> C[Election Schedule Announced]
-                    C --> D[Candidates File Nominations]
-                    D --> E[Campaigning Phase]
-                    E --> F[Polling Day: Cast Votes via EVM]
-                    F --> G[Votes Counted]
-                    G --> H[Results Declared]
-                    H --> I[Government Formation]
-                    click A call showDetails("A")
-                    click B call showDetails("B")
-                    click C call showDetails("C")
-                    click D call showDetails("D")
-                    click E call showDetails("E")
-                    click F call showDetails("F")
-                    click G call showDetails("G")
-                    click H call showDetails("H")
-                    click I call showDetails("I")
+        <div class="process-container-v3">
+            <div class="process-header">
+                <div class="header-badges">
+                    <span class="section-badge flowchart-badge" data-i18n="badge.flowchart">FLOWCHART</span>
+                    <div class="interactive-tag">
+                        <span class="touch-icon">👆</span>
+                        <span data-i18n="tag.flowchart">Interactive — click any step</span>
+                    </div>
+                </div>
+                <h2 data-i18n="process.h2">The Election Process</h2>
+                <p data-i18n="process.p">Follow the flowchart to understand the key steps in democratic elections. Click any node to learn more.</p>
+            </div>
+
+            <!-- Flowchart Grid -->
+            <div class="flowchart-grid" id="flowchartGrid">
+                <!-- Rows will be injected by script.js -->
+            </div>
+
+            <!-- Quiz CTA Card -->
+            <div class="quiz-cta-card">
+                <div class="quiz-cta-content">
+                    <div class="quiz-cta-icon">
+                        <img src="https://cdn-icons-png.flaticon.com/512/5692/5692030.png" alt="Quiz" style="width: 100%; height: auto;">
+                    </div>
+                    <div class="quiz-cta-text">
+                        <div class="section-badge" style="background: rgba(5, 150, 105, 0.1); color: var(--accent-green);">TEST YOUR UNDERSTANDING</div>
+                        <h3 data-i18n="quiz.cta.h3">Ready to test yourself?</h3>
+                        <p data-i18n="quiz.cta.p">Take a quick quiz to check how well you understand the election process.</p>
+                        <div class="quiz-cta-stats">
+                            <div class="stat-pill">🧠 5 Questions</div>
+                            <div class="stat-pill">🕒 2-3 Mins</div>
+                            <div class="stat-pill">🏆 Instant Results</div>
+                        </div>
+                    </div>
+                </div>
+                <button class="quiz-cta-btn" id="startQuizBtn" onclick="toggleQuizExpansion()">
+                    <span data-i18n="quiz.btn.start">Start Quiz</span>
+                    <span>→</span>
+                </button>
+            </div>
+
+            <!-- Expandable Quiz Section -->
+            <div class="expandable-quiz-section" id="expandableQuiz">
+                <div class="quiz-progress-header">
+                    <div class="quiz-progress-text" id="quizProgressText">Question 1 of 5</div>
+                    <div class="quiz-progress-bar-wrap">
+                        <div class="quiz-progress-bar-fill" id="quizProgressBar"></div>
+                    </div>
+                </div>
+
+                <div id="quizContentV2">
+                    <!-- Dynamic Question Content -->
+                </div>
+
+                <div class="quiz-footer">
+                    <button class="nav-btn" onclick="toggleQuizExpansion()">Cancel</button>
+                    <button class="cta-btn" id="nextQuestionBtn" onclick="handleNextQuestion()" style="background: var(--accent-green);">Next Question →</button>
+                </div>
+            </div>
+            <div class="process-footer-badge">
+                 <span class="shield-icon">🛡️</span>
+                 <span data-i18n="badge.fair">Every step ensures a free, fair and transparent election.</span>
             </div>
         </div>
+
         <div class="nav-buttons">
             <button onclick="navigate('intro')"    class="nav-btn" data-i18n="btn.back">← Back</button>
             <button onclick="navigate('timeline')" class="cta-btn" data-i18n="btn.next.timeline">Next: Timeline →</button>
@@ -211,71 +303,92 @@
     </div>
 </section>
 
-<!-- ══════════════════════════════════════════
-     SECTION 4 — VOTER READINESS QUIZ
-══════════════════════════════════════════ -->
-<section id="quiz" class="slide">
-    <div class="content-wrapper">
-        <div class="section-badge" data-i18n="badge.quiz">🧠 Quiz</div>
-        <h2 data-i18n="quiz.h2">Voter Readiness Quiz</h2>
-        <p data-i18n="quiz.p">Test your knowledge of the Indian electoral process. Pick the best answer for each question!</p>
-
-        <div class="quiz-container" id="quizContainer">
-            <!-- Questions injected by JS -->
-        </div>
-
-        <!-- Result card (hidden until submitted) -->
-        <div class="quiz-result" id="quizResult" style="display:none;">
-            <div class="result-emoji" id="resultEmoji">🎉</div>
-            <h3 id="resultTitle">Great Job!</h3>
-            <p id="resultText">You scored X out of 6.</p>
-            <div class="score-bar-wrap">
-                <div class="score-bar-fill" id="scoreBarFill"></div>
-            </div>
-            <button class="cta-btn" onclick="resetQuiz()" style="margin-top:1rem;" data-i18n="quiz.retake">🔄 Retake Quiz</button>
-        </div>
-
-        <div class="nav-buttons">
-            <button onclick="navigate('timeline')" class="nav-btn" data-i18n="btn.back">← Back</button>
-            <button onclick="navigate('tracker')"  class="cta-btn" data-i18n="btn.next.tracker">Next: Voter Journey →</button>
-        </div>
-    </div>
-</section>
+<!-- Removed legacy quiz section as it's now integrated into the process flowchart -->
 
 <!-- ══════════════════════════════════════════
-     SECTION 5 — PROGRESS TRACKER
+     SECTION 5 — VOTER JOURNEY (SaaS Style)
 ══════════════════════════════════════════ -->
 <section id="tracker" class="slide">
-    <div class="content-wrapper">
-        <div class="section-badge" data-i18n="badge.tracker">🗺️ Voter Journey</div>
-        <h2 data-i18n="tracker.h2">My Voter Journey</h2>
-        <p data-i18n="tracker.p">Follow your journey through the digital voting process.</p>
-
-        <div class="tracker-progress-row">
-            <div class="tracker-bar-wrap">
-                <div class="tracker-bar-fill" id="trackerBarFill"></div>
+    <div class="content-wrapper journey-wrapper-v2">
+        <!-- Header -->
+        <div class="journey-header">
+            <div class="journey-title-box">
+                <div class="section-badge" data-i18n="badge.tracker">🗺️ Voter Journey</div>
+                <h2 data-i18n="tracker.h2">Your Journey to Cast Your Vote</h2>
+                <p data-i18n="tracker.p">Follow these simple steps to complete your voting process securely and confidently.</p>
             </div>
-            <span class="tracker-pct" id="trackerPct">0%</span>
+            <div class="journey-header-illustration">
+                <img src="https://cdni.iconscout.com/illustration/premium/thumb/online-voting-illustration-download-in-svg-png-gif-file-formats--e-ballot-vote-digital-democracy-pack-people-illustrations-4543787.png" alt="Journey" style="max-width: 250px;">
+            </div>
         </div>
 
-        <ul class="tracker-list" id="trackerList">
-            <li data-key="t1"><label><input type="checkbox" id="t1" onchange="updateTracker()"> <span data-i18n="track.1">Find your Voter ID (EPIC)</span></label></li>
-            <li data-key="t2"><label><input type="checkbox" id="t2" onchange="updateTracker()"> <span data-i18n="track.2">Locate your polling booth</span></label></li>
-            <li data-key="t3"><label><input type="checkbox" id="t3" onchange="updateTracker()"> <span data-i18n="track.3">Research candidates & platforms</span></label></li>
-            <li data-key="t4"><label><input type="checkbox" id="t4" onchange="updateTracker()"> <span data-i18n="track.4">User opens platform (Start Simulation)</span></label></li>
-            <li data-key="t5"><label><input type="checkbox" id="t5" onchange="updateTracker()"> <span data-i18n="track.5">Selects “Start Voting Simulation”</span></label></li>
-            <li data-key="t6"><label><input type="checkbox" id="t6" onchange="updateTracker()"> <span data-i18n="track.6">Enters Voter ID in system</span></label></li>
-            <li data-key="t7"><label><input type="checkbox" id="t7" onchange="updateTracker()"> <span data-i18n="track.7">Clicks “Scan Fingerprint”</span></label></li>
-            <li data-key="t8"><label><input type="checkbox" id="t8" onchange="updateTracker()"> <span data-i18n="track.8">System verifies identity</span></label></li>
-            <li data-key="t9"><label><input type="checkbox" id="t9" onchange="updateTracker()"> <span data-i18n="track.9">If valid → “Vote Allowed”</span></label></li>
-            <li data-key="t10"><label><input type="checkbox" id="t10" onchange="updateTracker()"> <span data-i18n="track.10">If duplicate → “Alert: Already Voted”</span></label></li>
-            <li data-key="t11"><label><input type="checkbox" id="t11" onchange="updateTracker()"> <span data-i18n="track.11">If failed → OTP/Manual verification</span></label></li>
-            <li data-key="t12"><label><input type="checkbox" id="t12" onchange="updateTracker()"> <span data-i18n="track.12">Final confirmation & Vote cast</span></label></li>
-        </ul>
+        <!-- Progress Section -->
+        <div class="journey-progress-card">
+            <div class="progress-info">
+                <span class="progress-label" data-i18n="label.progress">Your Progress</span>
+                <div class="progress-stats">
+                    <span id="journeyStepCount">0 of 11 steps completed</span>
+                    <span class="pct-badge" id="journeyPct">0%</span>
+                </div>
+            </div>
+            <div class="journey-bar-wrap">
+                <div class="journey-bar-fill" id="journeyBarFill"></div>
+            </div>
+        </div>
 
-        <button class="nav-btn" onclick="resetTracker()" style="margin-top:1rem;" data-i18n="tracker.reset">🔄 Reset Journey</button>
+        <div class="journey-main-container">
+            <!-- Left: Step Flow -->
+            <div class="journey-flow-column">
+                <div class="timeline-vertical-line"></div>
+                <div id="voterJourneySteps">
+                    <!-- Steps will be injected by script.js -->
+                </div>
+            </div>
 
-        <div class="nav-buttons">
+            <!-- Right: Side Panel -->
+            <div class="journey-side-panel">
+                <div class="sticky-side-card">
+                    <div class="side-card-header">
+                        <span class="info-icon">ℹ️</span>
+                        <h4 data-i18n="side.journey.title">About This Journey</h4>
+                    </div>
+                    <p class="side-card-desc" data-i18n="side.journey.desc">This journey ensures that you are fully prepared and confident before casting your vote in the real election.</p>
+                    
+                    <ul class="benefit-list">
+                        <li>
+                            <div class="benefit-icon">🛡️</div>
+                            <div class="benefit-text">
+                                <strong data-i18n="side.benefit.1.t">Secure</strong>
+                                <p data-i18n="side.benefit.1.d">Multiple verification layers to protect your identity.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="benefit-icon">🕒</div>
+                            <div class="benefit-text">
+                                <strong data-i18n="side.benefit.2.t">Simple & Quick</strong>
+                                <p data-i18n="side.benefit.2.d">Easy steps to help you vote without confusion.</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="benefit-icon">🔒</div>
+                            <div class="benefit-text">
+                                <strong data-i18n="side.benefit.3.t">Transparent</strong>
+                                <p data-i18n="side.benefit.3.d">A clear and fair process for every citizen.</p>
+                            </div>
+                        </li>
+                    </ul>
+
+                    <div class="journey-quote-box">
+                        <p class="quote-text">“Your vote is your voice. Make it count!”</p>
+                        <span class="quote-author">— VoteAssist</span>
+                    </div>
+
+                    <button class="nav-btn secondary-btn" onclick="resetTracker()" style="width: 100%; margin-top: 1.5rem;" data-i18n="tracker.reset">🔄 Reset Journey</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-buttons" style="margin-top: 2rem;">
             <button onclick="navigate('quiz')"       class="nav-btn" data-i18n="btn.back">← Back</button>
             <button onclick="navigate('verification')" class="cta-btn" data-i18n="btn.next.verify">Next: Verify →</button>
         </div>
@@ -562,6 +675,166 @@
 </section>
 
 <!-- ══════════════════════════════════════════
+     SECTION 6.5 — SECURE REMOTE VOTING (SRV-X)
+══════════════════════════════════════════ -->
+<section id="remote-voting" class="slide">
+    <div class="content-wrapper">
+        <div class="section-badge" data-i18n="badge.remote">🌐 Innovation</div>
+        <h2 data-i18n="remote.h2">Secure Remote Voting Extension (SRV-X)</h2>
+        <p class="intro-text" data-i18n="remote.p">A conceptual, optional extension for voters unable to reach polling booths due to distance, disability, or safety concerns.</p>
+
+        <div class="remote-voting-grid">
+            <!-- Feature Pillars -->
+            <div class="remote-feature-card">
+                <div class="card-icon">♿</div>
+                <h3 data-i18n="remote.f1.t">Accessibility First</h3>
+                <p data-i18n="remote.f1.p">Designed specifically for overseas citizens, voters with disabilities, and those in remote areas. It supplements, never replaces, in-person voting.</p>
+            </div>
+            <div class="remote-feature-card">
+                <div class="card-icon">🆔</div>
+                <h3 data-i18n="remote.f2.t">Biometric Binding</h3>
+                <p data-i18n="remote.f2.p">Utilizes facial recognition with liveness detection and localized fingerprint hashing to ensure the right person is casting the vote.</p>
+            </div>
+            <div class="remote-feature-card">
+                <div class="card-icon">🛡️</div>
+                <h3 data-i18n="remote.f3.t">AI Integrity Guard</h3>
+                <p data-i18n="remote.f3.p">Real-time AI monitoring detects coercion attempts, bot activity, and voting anomalies to maintain electoral purity.</p>
+            </div>
+        </div>
+
+        <div class="proposal-highlight-box">
+            <h3 data-i18n="remote.h3">Proposal Key Points</h3>
+            <div class="highlight-grid">
+                <div class="highlight-item">
+                    <span class="hl-check">✔</span>
+                    <span data-i18n="remote.hl.1"><strong>One-Person-One-Vote:</strong> Live-sync with physical booths prevents double voting.</span>
+                </div>
+                <div class="highlight-item">
+                    <span class="hl-check">✔</span>
+                    <span data-i18n="remote.hl.2"><strong>End-to-End Verifiable:</strong> Encrypted tracking codes allow voters to verify their vote was counted.</span>
+                </div>
+                <div class="highlight-item">
+                    <span class="hl-check">✔</span>
+                    <span data-i18n="remote.hl.3"><strong>Privacy Centric:</strong> Zero-knowledge proofs protect ballot secrecy while proving eligibility.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="status-banner info">
+            <span class="info-icon">ℹ️</span>
+            <p data-i18n="remote.disclaimer"><strong>Note:</strong> This is a conceptual feature proposal. It is designed to work alongside existing systems, not replace them. Use of this feature would be optional and based on eligibility criteria.</p>
+        </div>
+
+        <div class="nav-buttons">
+            <button onclick="navigate('comparison')" class="nav-btn" data-i18n="btn.back">← Back</button>
+            <button onclick="navigate('dosanddonts')" class="cta-btn" data-i18n="btn.next.guide">Next: Voter Guide →</button>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════
+     SECTION 6.6 — VOTER FEEDBACK SYSTEM
+══════════════════════════════════════════ -->
+<section id="feedback" class="slide">
+    <div class="content-wrapper">
+        <div class="section-badge" data-i18n="badge.feedback">💬 Voter Voice</div>
+        <h2 data-i18n="feedback.h2">Voter Feedback & Issue Reporting</h2>
+        <p data-i18n="feedback.p">Report any issues faced during your voting experience. Your feedback helps us improve future election cycles.</p>
+
+        <div class="feedback-container">
+            <form id="voterFeedbackForm" onsubmit="handleFeedbackSubmit(event)">
+                <div class="input-group">
+                    <label for="issueType" data-i18n="feedback.issue.label">Type of Issue:</label>
+                    <select id="issueType" class="filter-select" required>
+                        <option value="" disabled selected data-i18n="feedback.issue.select">Select issue type...</option>
+                        <option value="queue" data-i18n="issue.queue">Long Queue / Wait Time</option>
+                        <option value="id" data-i18n="issue.id">ID / Documentation Problem</option>
+                        <option value="safety" data-i18n="issue.safety">Safety Concern / Intimidation</option>
+                        <option value="technical" data-i18n="issue.tech">Technical Issue (EVM/VVPAT)</option>
+                        <option value="other" data-i18n="issue.other">Other</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="feedbackText" data-i18n="feedback.text.label">Describe your experience:</label>
+                    <textarea id="feedbackText" class="feedback-textarea" data-i18n-placeholder="feedback.text.placeholder" placeholder="Tell us more about the issue..." required></textarea>
+                </div>
+
+                <div class="form-footer">
+                    <button type="submit" class="cta-btn" data-i18n="feedback.submit">Submit Feedback →</button>
+                </div>
+            </form>
+
+            <!-- Status Tracker (Initially hidden) -->
+            <div id="feedbackStatusTrack" class="status-tracker-card" style="display:none;">
+                <h3 data-i18n="feedback.track.h3">Report Status</h3>
+                <div class="status-timeline">
+                    <div class="status-point active" id="st-submitted">
+                        <div class="point-dot"></div>
+                        <span data-i18n="st.submitted">Submitted</span>
+                    </div>
+                    <div class="status-point" id="st-review">
+                        <div class="point-dot"></div>
+                        <span data-i18n="st.review">Under Review</span>
+                    </div>
+                    <div class="status-point" id="st-resolved">
+                        <div class="point-dot"></div>
+                        <span data-i18n="st.resolved">Resolved</span>
+                    </div>
+                </div>
+                <p id="statusMsg" class="status-msg" data-i18n="feedback.wait">Our team is reviewing your report.</p>
+            </div>
+        </div>
+
+        <!-- AI FEEDBACK INSIGHTS (Admin/Public Transparency View) -->
+        <div class="feedback-insights-panel">
+            <div class="panel-header-row">
+                <div>
+                    <div class="section-badge" data-i18n="badge.insights">🤖 AI Insights</div>
+                    <h3 data-i18n="insights.h2">Global Feedback Dashboard</h3>
+                </div>
+                <span class="panel-tag" data-i18n="tag.live">Live Aggregation</span>
+            </div>
+            
+            <div class="insights-grid">
+                <!-- Issue Breakdown Chart -->
+                <div class="insight-card">
+                    <h4 data-i18n="insights.breakdown">Issue Distribution</h4>
+                    <div class="mini-chart-container">
+                        <canvas id="issueBreakdownChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Region Wise Insights -->
+                <div class="insight-card">
+                    <h4 data-i18n="insights.region">Region-wise Heatmap</h4>
+                    <ul class="region-list" id="regionInsightsList">
+                        <!-- Injected by JS -->
+                    </ul>
+                </div>
+
+                <!-- AI Recommendations -->
+                <div class="insight-card highlight-card">
+                    <div class="card-icon-row"><span class="card-icon">🧠</span><h4 data-i18n="insights.ai">AI Improvement Strategy</h4></div>
+                    <p id="aiRecommendationText" class="ai-text">Analyzing latest reports to suggest structural improvements...</p>
+                    <div class="improvement-progress">
+                        <label data-i18n="insights.learning">System Learning Progress</label>
+                        <div class="progress-bar-wrap">
+                            <div class="progress-bar-fill" style="width: 78%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-buttons">
+            <button onclick="navigate('remote-voting')" class="nav-btn" data-i18n="btn.back">← Back</button>
+            <button onclick="navigate('dosanddonts')" class="cta-btn" data-i18n="btn.next.guide">Next: Voter Guide →</button>
+        </div>
+    </div>
+</section>
+
+<!-- ══════════════════════════════════════════
      SECTION 7 — VOTER GUIDE (Dos & Don'ts + Fake News)
 ══════════════════════════════════════════ -->
 <section id="dosanddonts" class="slide">
@@ -619,7 +892,7 @@
         </div>
 
         <div class="nav-buttons">
-            <button onclick="navigate('comparison')" class="nav-btn" data-i18n="btn.back">← Back</button>
+            <button onclick="navigate('feedback')"   class="nav-btn" data-i18n="btn.back">← Back</button>
             <button onclick="navigate('mission')"    class="cta-btn" data-i18n="btn.next.mission">Next: Our Mission →</button>
         </div>
     </div>
@@ -673,41 +946,75 @@
 <!-- Confetti Canvas -->
 <canvas id="confettiCanvas"></canvas>
 
-<!-- ── Chatbot Widget ── -->
-<div class="chatbot-wrapper" id="chatbotWrapper">
+<!-- Consolidated Chatbot Widget -->
+<div class="chatbot-trigger-container">
+    <div class="chatbot-label" data-i18n="bot.label">Ask AI Assistant</div>
+    <button class="chatbot-btn" onclick="toggleChat()" aria-label="Open Chatbot">
+        <span class="bot-icon">🤖</span>
+        <span class="bot-badge">1</span>
+    </button>
+    
+    <!-- Chatbot Window -->
     <div class="chatbot-window" id="chatbotWindow">
         <div class="chat-header">
             <div class="chat-header-left">
-                <div class="chat-avatar">🗳️</div>
+                <div class="chat-avatar">🤖</div>
                 <div>
                     <div class="chat-title-text" id="chatTitleText" data-i18n="bot.title">VoteBot</div>
-                    <div class="chat-status">🟢 Online — Ask me anything!</div>
+                    <div class="chat-status">🟢 Online</div>
                 </div>
             </div>
             <button class="chat-close-btn" onclick="toggleChat()" aria-label="Close chat">✕</button>
         </div>
         <div class="chat-messages" id="chatMessages"></div>
-        <div class="quick-questions" id="quickQuestions">
-            <!-- Chips injected by JS -->
-        </div>
+        <div class="quick-questions" id="quickQuestions"></div>
         <div class="chat-input-row">
             <input type="text" id="chatInput" class="chat-input" data-i18n-placeholder="bot.placeholder" placeholder="Ask a question..." onkeydown="if(event.key==='Enter') sendChat()">
             <button class="chat-send-btn" onclick="sendChat()" aria-label="Send">➤</button>
         </div>
     </div>
-    <button class="chatbot-toggle-btn" id="chatToggleBtn" onclick="toggleChat()" aria-label="Open chat">
-        💬
-        <span class="chat-badge" id="chatBadge">1</span>
-    </button>
 </div>
 
-<!-- Step Detail Modal -->
-<div id="detailsModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+<!-- Step Detail Modal (Rich V2) -->
+<div id="detailsModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
     <div class="modal-backdrop" onclick="closeModal()"></div>
-    <div class="modal-content">
+    <div class="modal-content rich-modal">
         <button class="close-btn" onclick="closeModal()" aria-label="Close">✕</button>
-        <h3 id="modalTitle">Step Title</h3>
-        <p  id="modalDescription">Step description goes here.</p>
+        
+        <div class="detail-header">
+            <div class="detail-icon-wrap">
+                <span id="detailIcon">📋</span>
+            </div>
+            <div class="detail-title-wrap">
+                <span class="step-counter" id="detailStepCount">STEP 1 OF 8</span>
+                <h3 id="detailTitle">Citizen Registers to Vote</h3>
+            </div>
+        </div>
+        
+        <div class="detail-body">
+            <p id="detailDesc" class="detail-main-desc">Every citizen who is eligible to vote must first register with the Election Commission.</p>
+            
+            <div class="info-group">
+                <h4 class="group-title"><span class="group-icon">🤔</span> <span data-i18n="label.happens">What happens in this step?</span></h4>
+                <ul id="detailWhat" class="bullet-list"></ul>
+            </div>
+
+            <div class="why-box">
+                <h4 class="group-title"><span class="group-icon">💡</span> <span data-i18n="label.why">Why it matters?</span></h4>
+                <p id="detailWhy">This step ensures that every eligible citizen...</p>
+            </div>
+
+            <div class="info-group">
+                <h4 class="group-title"><span class="group-icon">📄</span> <span data-i18n="label.docs">Documents Required</span></h4>
+                <ul id="detailDocs" class="check-list"></ul>
+            </div>
+        </div>
+        
+        <div class="detail-footer">
+            <button class="cta-btn next-step-btn" id="nextStepBtn" onclick="nextProcessStep()">
+                <span data-i18n="btn.next.step">Next Step</span> <span>→</span>
+            </button>
+        </div>
     </div>
 </div>
 

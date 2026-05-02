@@ -10,7 +10,7 @@ function updateUI() {
     document.querySelectorAll('[data-i18n]').forEach(el => {
         const key = el.getAttribute('data-i18n');
         const text = getTranslation(key);
-        if (text) el.textContent = text;
+        if (text) el.innerHTML = text;
     });
 
     // Update placeholders
@@ -26,9 +26,23 @@ function updateUI() {
 
     // Re-render components that rely on dynamic text
     buildQuiz();
+    buildProcessSection();
+    // Refresh modal content only if it's already open
+    const modal = document.getElementById('detailsModal');
+    if (modal && modal.classList.contains('show')) {
+        updateProcessModalContent();
+    }
     updateFakeNewsScore();
     renderSuggestionChips();
-    // (Optional) Could re-render chart if needed, but labels are mostly years
+    buildComparison();
+    if (window.renderRegionInsights) renderRegionInsights();
+    renderVoterJourney();
+    updateJourneyProgress();
+    
+    // Refresh Charts with new language labels
+    if (window.chartRendered) renderChart();
+    if (window.adminChart) renderAdminChart();
+    if (window.feedbackChart) renderFeedbackChart();
 }
 
 function getTranslation(key) {
@@ -101,6 +115,16 @@ if (themeToggle) {
 // Load saved theme
 applyTheme(localStorage.getItem('voteassist-theme') || 'light');
 
+/* ─── Navbar Scroll Effect ───────────────────────────── */
+const mainNav = document.getElementById('mainNav');
+window.addEventListener('scroll', () => {
+    if (window.scrollY > 50) {
+        mainNav.classList.add('scrolled');
+    } else {
+        mainNav.classList.remove('scrolled');
+    }
+});
+
 /* ─── Mobile Hamburger Menu ──────────────────────────── */
 const hamburger  = document.getElementById('hamburger');
 const mobileMenu = document.getElementById('mobileMenu');
@@ -150,7 +174,6 @@ function updateCountdown() {
 updateCountdown();
 setInterval(updateCountdown, 1000);
 
-/* ─── Chart.js: Voter Turnout ────────────────────────── */
 function renderChart() {
     const canvas = document.getElementById('turnoutChart');
     if (!canvas) return;
@@ -159,12 +182,14 @@ function renderChart() {
     gradient.addColorStop(0, 'rgba(77,182,172,0.45)');
     gradient.addColorStop(1, 'rgba(77,182,172,0.0)');
 
-    new Chart(ctx, {
+    if (window.turnoutChartInst) window.turnoutChartInst.destroy();
+
+    window.turnoutChartInst = new Chart(ctx, {
         type: 'line',
         data: {
             labels: ['1999','2004','2009','2014','2019','2024'],
             datasets: [{
-                label: 'Lok Sabha Voter Turnout (%)',
+                label: getTranslation('admin.chart.title') || 'Voter Turnout (%)',
                 data: [59.99, 58.07, 58.21, 66.44, 67.40, 65.79],
                 borderColor: '#26a69a', backgroundColor: gradient,
                 borderWidth: 3, fill: true, tension: 0.4,
@@ -192,177 +217,346 @@ function renderChart() {
     });
 }
 
-/* ─── Mermaid Step Details Modal ─────────────────────── */
-const stepDetails = {
-    "A": { titleKey:"track.1", descKey:"desc.A" },
-    "B": { titleKey:"track.2", descKey:"desc.B" },
-    "C": { titleKey:"tl.1",    descKey:"desc.C" },
-    "D": { titleKey:"tl.2",    descKey:"desc.D" },
-    "E": { titleKey:"tl.3",    descKey:"desc.E" },
-    "F": { titleKey:"tl.4",    descKey:"desc.F" },
-    "G": { titleKey:"tl.5",    descKey:"desc.G" },
-    "H": { titleKey:"tl.6",    descKey:"desc.H" },
-    "I": { titleKey:"tl.6",    descKey:"desc.I" }
+/* ─── Election Process V2 Logic ──────────────────────── */
+const electionSteps = [
+    { id: 1, icon: '📋', t:'step.1.t', s:'step.1.s', d:'step.1.d', w:'step.1.w', y:'step.1.y', x:'step.1.x' },
+    { id: 2, icon: '🔍', t:'step.2.t', s:'step.2.s', d:'step.2.d', w:'step.2.w', y:'step.2.y', x:'step.2.x' },
+    { id: 3, icon: '📅', t:'step.3.t', s:'step.3.s', d:'step.3.d', w:'step.3.w', y:'step.3.y', x:'step.3.x' },
+    { id: 4, icon: '📝', t:'step.4.t', s:'step.4.s', d:'step.4.d', w:'step.4.w', y:'step.4.y', x:'step.4.x' },
+    { id: 5, icon: '📢', t:'step.5.t', s:'step.5.s', d:'step.5.d', w:'step.5.w', y:'step.5.y', x:'step.5.x' },
+    { id: 6, icon: '🗳️', t:'step.6.t', s:'step.6.s', d:'step.6.d', w:'step.6.w', y:'step.6.y', x:'step.6.x' },
+    { id: 7, icon: '📊', t:'step.7.t', s:'step.7.s', d:'step.7.d', w:'step.7.w', y:'step.7.y', x:'step.7.x' },
+    { id: 8, icon: '🏆', t:'step.8.t', s:'step.8.s', d:'step.8.d', w:'step.8.w', y:'step.8.y', x:'step.8.x' }
+];
+
+let activeStepIndex = 0;
+
+function buildProcessSection() {
+    const container = document.getElementById('flowchartGrid');
+    if (!container) return;
+
+    const renderCard = (step, idx) => `
+        <div class="step-card-v3 ${idx === activeStepIndex ? 'active' : ''}" onclick="selectProcessStep(${idx})">
+            <div class="step-num-v3">${step.id}</div>
+            <div class="step-icon-v3 icon-bg-${step.id}">${step.icon}</div>
+            <h4 data-i18n="${step.t}">${getTranslation(step.t)}</h4>
+            <p data-i18n="${step.s}">${getTranslation(step.s)}</p>
+            ${(idx % 4 !== 3) ? '<div class="arrow-right">→</div>' : ''}
+        </div>
+    `;
+
+    const row1 = [0, 1, 2, 3].map(i => renderCard(electionSteps[i], i)).join('');
+    const row2 = [4, 5, 6, 7].map(i => renderCard(electionSteps[i], i)).join('');
+
+    container.innerHTML = `
+        <div class="flow-row">${row1}</div>
+        <div class="flow-row">${row2}</div>
+    `;
+}
+
+function updateProcessModalContent() {
+    const step = electionSteps[activeStepIndex];
+    
+    // Update active class on cards
+    document.querySelectorAll('.step-card-v3').forEach((card, i) => {
+        card.classList.toggle('active', i === activeStepIndex);
+    });
+
+    // Update Modal Content
+    const update = (id, key, isHTML = false) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const val = getTranslation(key);
+        if (isHTML) el.innerHTML = val; else el.textContent = val;
+    };
+
+    update('detailTitle', step.t);
+    update('detailDesc',  step.d);
+    update('detailWhat',  step.w, true);
+    update('detailWhy',   step.y);
+    update('detailDocs',  step.x, true);
+    
+    const iconEl = document.getElementById('detailIcon');
+    if (iconEl) iconEl.textContent = step.icon;
+    
+    const countEl = document.getElementById('detailStepCount');
+    if (countEl) countEl.textContent = `STEP ${step.id} OF 8`;
+
+    // Handle Next Step Button
+    const btn = document.getElementById('nextStepBtn');
+    if (btn) {
+        if (activeStepIndex === electionSteps.length - 1) {
+            btn.innerHTML = `<span data-i18n="nav.timeline">${getTranslation('nav.timeline')}</span> <span>→</span>`;
+            btn.onclick = () => { window.closeModal(); navigate('timeline'); };
+        } else {
+            btn.innerHTML = `<span data-i18n="btn.next.step">${getTranslation('btn.next.step')}</span> <span>→</span>`;
+            btn.onclick = () => nextProcessStep();
+        }
+    }
+}
+
+window.selectProcessStep = function(index) {
+    activeStepIndex = index;
+    updateProcessModalContent();
+    
+    // Open Modal
+    const modal = document.getElementById('detailsModal');
+    if (modal) modal.classList.add('show');
+    document.body.style.overflow = 'hidden';
 };
 
+window.nextProcessStep = function() {
+    if (activeStepIndex < electionSteps.length - 1) {
+        selectProcessStep(activeStepIndex + 1);
+    }
+};
+
+// Modals still used in other places maybe, keeping them but updating logic
 window.showDetails = function(stepId) {
-    if (!stepDetails[stepId]) return;
-    const title = getTranslation(stepDetails[stepId].titleKey);
-    const desc  = getTranslation(stepDetails[stepId].descKey);
-    document.getElementById('modalTitle').textContent       = title;
-    document.getElementById('modalDescription').textContent = desc;
-    document.getElementById('detailsModal').classList.add('show');
+    // This function can be kept for other generic details if needed
+    // But for Process, we now use the side panel
 };
 
 window.closeModal = function() {
-    document.getElementById('detailsModal').classList.remove('show');
+    const modal = document.getElementById('detailsModal');
+    if (modal) modal.classList.remove('show');
+    document.body.style.overflow = '';
 };
+
 
 document.addEventListener('keydown', e => { if (e.key === 'Escape') { window.closeModal(); } });
 window.onclick = e => { if (e.target === document.getElementById('detailsModal')) window.closeModal(); };
 
-/* ─── QUIZ ───────────────────────────────────────────── */
-let quizAnswers = {};
+/* ─── NEW EXPANDABLE QUIZ LOGIC ─────────────────────── */
+let currentQuizStep = 0;
+const totalQuizSteps = 5;
+let userQuizAnswers = {};
 
-function buildQuiz() {
-    quizAnswers = {};
-    const container = document.getElementById('quizContainer');
-    if (!container) return;
-    container.innerHTML = '';
-
-    const qCount = 6;
-    for (let qi = 0; qi < qCount; qi++) {
-        const qKey = `quiz.q${qi+1}`;
-        const questionText = getTranslation(qKey);
-        
-        const div = document.createElement('div');
-        div.className = 'quiz-question';
-        div.id = `qq-${qi}`;
-
-        let optionsHTML = '';
-        for (let oi = 0; oi < 4; oi++) {
-            const oKey = `quiz.q${qi+1}.o${oi+1}`;
-            const optionText = getTranslation(oKey);
-            optionsHTML += `
-                <li>
-                    <label id="ql-${qi}-${oi}">
-                        <input type="radio" name="q${qi}" value="${oi}" onchange="recordAnswer(${qi}, ${oi})">
-                        ${optionText}
-                    </label>
-                </li>`;
-        }
-
-        div.innerHTML = `<p>Q${qi+1}. ${questionText}</p><ul class="quiz-options">${optionsHTML}</ul>`;
-        container.appendChild(div);
+function toggleQuizExpansion() {
+    const quizSection = document.getElementById('expandableQuiz');
+    const startBtn = document.getElementById('startQuizBtn');
+    
+    if (quizSection.classList.contains('expanded')) {
+        quizSection.classList.remove('expanded');
+        startBtn.innerHTML = `<span>${getTranslation('quiz.btn.start')}</span> <span>→</span>`;
+    } else {
+        quizSection.classList.add('expanded');
+        startBtn.innerHTML = `<span>Close Quiz</span> <span>×</span>`;
+        resetQuizV2();
     }
+}
+window.toggleQuizExpansion = toggleQuizExpansion;
 
-    const row = document.createElement('div');
-    row.className = 'quiz-submit-row';
-    row.innerHTML = `<button class="cta-btn" onclick="submitQuiz()" id="quizSubmitBtn">${getTranslation('quiz.submit')}</button>`;
-    container.appendChild(row);
-
-    const result = document.getElementById('quizResult');
-    if (result) result.style.display = 'none';
+function resetQuizV2() {
+    currentQuizStep = 0;
+    userQuizAnswers = {};
+    renderQuizStep();
 }
 
-function recordAnswer(qi, oi) { quizAnswers[qi] = oi; }
+function renderQuizStep() {
+    const container = document.getElementById('quizContentV2');
+    const progressText = document.getElementById('quizProgressText');
+    const progressBar = document.getElementById('quizProgressBar');
+    const nextBtn = document.getElementById('nextQuestionBtn');
 
-function submitQuiz() {
-    const qCount = 6;
-    const correctAnswers = [1, 2, 1, 2, 2, 1]; // Indices: 18 years, Form 6, EVM, 272, ECI, VVPAT verification
-
-    if (Object.keys(quizAnswers).length < qCount) {
-        alert(currentLang === 'hi' ? 'कृपया जमा करने से पहले सभी प्रश्नों के उत्तर दें!' : 'Please answer all questions before submitting!');
+    if (currentQuizStep >= totalQuizSteps) {
+        renderQuizResultV2();
         return;
     }
 
-    let score = 0;
-    for (let qi = 0; qi < qCount; qi++) {
-        const selected = quizAnswers[qi];
-        const correct = correctAnswers[qi];
+    const qIndex = currentQuizStep + 1;
+    const qKey = `quiz.q${qIndex}`;
+    const questionText = getTranslation(qKey);
 
-        for (let oi = 0; oi < 4; oi++) {
-            const label = document.getElementById(`ql-${qi}-${oi}`);
-            if (label) label.classList.remove('correct','wrong');
-        }
+    progressText.textContent = `Question ${qIndex} of ${totalQuizSteps}`;
+    progressBar.style.width = `${(qIndex / totalQuizSteps) * 100}%`;
+    nextBtn.textContent = qIndex === totalQuizSteps ? 'Finish Quiz' : 'Next Question →';
 
-        const correctLabel  = document.getElementById(`ql-${qi}-${correct}`);
-        const selectedLabel = document.getElementById(`ql-${qi}-${selected}`);
-        
-        if (correctLabel)  correctLabel.classList.add('correct');
-        if (selected === correct) {
-            score++;
-        } else if (selectedLabel) {
-            selectedLabel.classList.add('wrong');
-        }
-        document.querySelectorAll(`input[name="q${qi}"]`).forEach(r => r.disabled = true);
+    let optionsHTML = '';
+    const letters = ['A', 'B', 'C', 'D'];
+    for (let i = 0; i < 4; i++) {
+        const oKey = `quiz.q${qIndex}.o${i + 1}`;
+        const optionText = getTranslation(oKey);
+        optionsHTML += `
+            <div class="quiz-option-v2 ${userQuizAnswers[currentQuizStep] === i ? 'selected' : ''}" onclick="selectQuizOption(${i})">
+                <div class="option-letter">${letters[i]}</div>
+                <span>${optionText}</span>
+            </div>
+        `;
     }
 
-    const pct    = Math.round((score / qCount) * 100);
-    const result = document.getElementById('quizResult');
-    if (result) {
-        result.style.display = 'block';
-        const titleKey = score === qCount ? 'Perfect Score!' : score >= 4 ? 'Great Job!' : 'Keep Learning!';
-        // Since we don't have these specific keys in translations.js yet, we use defaults or add them
-        document.getElementById('resultEmoji').textContent = score === qCount ? '🎉' : score >= 4 ? '👏' : '📚';
-        document.getElementById('resultTitle').textContent = titleKey;
-        document.getElementById('resultText').textContent  = (currentLang === 'hi' ? `आपका स्कोर ${score} में से ${qCount} है` : `You scored ${score} out of ${qCount}`) + ` (${pct}%)`;
-        document.getElementById('scoreBarFill').style.width = pct + '%';
-        document.getElementById('quizSubmitBtn').disabled = true;
-        result.scrollIntoView({ behavior:'smooth', block:'nearest' });
-    }
-
-    if (score === qCount) launchConfetti();
+    container.innerHTML = `
+        <div class="quiz-question-v2">
+            <h3>${questionText}</h3>
+            <div class="quiz-options-grid">${optionsHTML}</div>
+        </div>
+    `;
 }
 
-function resetQuiz() { buildQuiz(); }
+window.selectQuizOption = function(index) {
+    userQuizAnswers[currentQuizStep] = index;
+    renderQuizStep();
+};
+
+window.handleNextQuestion = function() {
+    if (userQuizAnswers[currentQuizStep] === undefined) {
+        alert(currentLang === 'hi' ? 'कृपया एक विकल्प चुनें!' : 'Please select an option!');
+        return;
+    }
+    currentQuizStep++;
+    renderQuizStep();
+};
+
+function renderQuizResultV2() {
+    const container = document.getElementById('quizContentV2');
+    const progressText = document.getElementById('quizProgressText');
+    const progressBar = document.getElementById('quizProgressBar');
+    const nextBtn = document.getElementById('nextQuestionBtn');
+
+    let score = 0;
+    const correctAnswers = [1, 2, 1, 2, 2]; // 18 years, Form 6, EVM, 272, ECI
+
+    for (let i = 0; i < totalQuizSteps; i++) {
+        if (userQuizAnswers[i] === correctAnswers[i]) score++;
+    }
+
+    const pct = (score / totalQuizSteps) * 100;
+    progressText.textContent = `Quiz Complete!`;
+    progressBar.style.width = `100%`;
+    nextBtn.textContent = 'Restart Quiz';
+    nextBtn.onclick = () => { resetQuizV2(); nextBtn.onclick = handleNextQuestion; };
+
+    container.innerHTML = `
+        <div class="quiz-result-v2" style="text-align: center; padding: 2rem 0;">
+            <div style="font-size: 4rem; margin-bottom: 1rem;">${score === totalQuizSteps ? '🎉' : '👏'}</div>
+            <h2 style="margin-bottom: 1rem;">${score === totalQuizSteps ? 'Perfect Score!' : 'Great Effort!'}</h2>
+            <p style="font-size: 1.2rem; color: var(--text-mid); margin-bottom: 2rem;">
+                You scored <strong>${score}</strong> out of <strong>${totalQuizSteps}</strong> (${pct}%)
+            </p>
+            <div class="score-bar-wrap" style="max-width: 400px; margin: 0 auto 2rem;">
+                <div class="score-bar-fill" style="width: ${pct}%;"></div>
+            </div>
+        </div>
+    `;
+    
+    if (score === totalQuizSteps) launchConfetti();
+}
+
+// Keep a placeholder for resetQuiz to avoid errors in updateUI
+function resetQuiz() { resetQuizV2(); }
 window.resetQuiz = resetQuiz;
 
-/* ─── PROGRESS TRACKER ───────────────────────────────── */
-const TRACKER_KEY = 'voteassist-tracker';
+function buildQuiz() {
+    // This is now handled by resetQuizV2 and renderQuizStep when expanded
+    if (document.getElementById('expandableQuiz')?.classList.contains('expanded')) {
+        renderQuizStep();
+    }
+}
+
+/* ══════════════════════════════════════════════════════
+   VOTER JOURNEY V2 — LOGIC
+══════════════════════════════════════════════════════ */
+const JOURNEY_KEY = 'voteassist-journey-v2';
+const journeySteps = [
+    { id: 1, icon: '🆔', t: 'track.1', d: 'Ensure you have your EPIC number or Voter ID card with you.' },
+    { id: 2, icon: '📍', t: 'track.2', d: 'Find your assigned polling station using your PIN code or address.' },
+    { id: 3, icon: '👥', t: 'track.3', d: 'Learn about the candidates, their vision and development plans.' },
+    { id: 4, icon: '🖥️', t: 'track.4', d: 'Experience a mock voting process to familiarize yourself with the system.' },
+    { id: 5, icon: '⌨️', t: 'track.5', d: 'Enter your Voter ID or scan your EPIC for verification.' },
+    { id: 6, icon: '☝️', t: 'track.6', d: 'Biometric verification to ensure secure and fair voting.' },
+    { id: 7, icon: '🔍', t: 'track.7', d: 'System matches your details with the official electoral roll.' },
+    { id: 8, icon: '✅', t: 'track.8', d: 'Once verified, the system allows you to proceed to the ballot.' },
+    { id: 9, icon: '🗳️', t: 'track.9', d: 'Select your preferred candidate on the digital ballot paper.' },
+    { id: 10, icon: '📝', t: 'track.10', d: 'Review your selection before finalizing your vote.' },
+    { id: 11, icon: '🎉', t: 'track.11', d: 'Your vote is securely cast and recorded in the system.' }
+];
+
+let completedSteps = JSON.parse(localStorage.getItem(JOURNEY_KEY)) || [];
 
 function loadTracker() {
-    const saved = JSON.parse(localStorage.getItem(TRACKER_KEY) || '{}');
-    document.querySelectorAll('#trackerList input[type=checkbox]').forEach(cb => {
-        if (saved[cb.id]) {
-            cb.checked = true;
-            cb.closest('li').classList.add('done');
+    renderVoterJourney();
+    updateJourneyProgress();
+}
+
+function renderVoterJourney() {
+    const container = document.getElementById('voterJourneySteps');
+    if (!container) return;
+
+    // Find the first non-completed step to mark as "In Progress"
+    let inProgressId = -1;
+    for (let s of journeySteps) {
+        if (!completedSteps.includes(s.id)) {
+            inProgressId = s.id;
+            break;
         }
-    });
-    updateTrackerUI();
+    }
+
+    container.innerHTML = journeySteps.map(step => {
+        const isCompleted = completedSteps.includes(step.id);
+        const isInProgress = step.id === inProgressId;
+        
+        let statusClass = 'pending';
+        let statusText = getTranslation('status.pending');
+        if (isCompleted) {
+            statusClass = 'completed';
+            statusText = getTranslation('status.completed') + ' ✓';
+        } else if (isInProgress) {
+            statusClass = 'in-progress';
+            statusText = getTranslation('status.inprogress');
+        }
+
+        return `
+            <div class="journey-step-card ${statusClass}" onclick="toggleStep(${step.id})">
+                <div class="step-indicator">${isCompleted ? '✓' : step.id}</div>
+                <div class="step-card-icon">${step.icon}</div>
+                <div class="step-card-content">
+                    <h4 data-i18n="${step.t}">${getTranslation(step.t)}</h4>
+                    <p>${step.d}</p>
+                </div>
+                <div class="status-badge ${statusClass}">${statusText}</div>
+            </div>
+        `;
+    }).join('');
 }
 
-function updateTracker() {
-    const saved = {};
-    document.querySelectorAll('#trackerList input[type=checkbox]').forEach(cb => {
-        saved[cb.id] = cb.checked;
-        cb.closest('li').classList.toggle('done', cb.checked);
-    });
-    localStorage.setItem(TRACKER_KEY, JSON.stringify(saved));
-    updateTrackerUI();
+function toggleStep(id) {
+    if (completedSteps.includes(id)) {
+        completedSteps = completedSteps.filter(sid => sid !== id);
+    } else {
+        completedSteps.push(id);
+    }
+    
+    localStorage.setItem(JOURNEY_KEY, JSON.stringify(completedSteps));
+    renderVoterJourney();
+    updateJourneyProgress();
+    
+    // Launch confetti on completion
+    if (completedSteps.length === journeySteps.length) launchConfetti();
 }
-window.updateTracker = updateTracker;
 
-function updateTrackerUI() {
-    const all     = document.querySelectorAll('#trackerList input[type=checkbox]');
-    const checked = document.querySelectorAll('#trackerList input[type=checkbox]:checked');
-    const pct     = Math.round((checked.length / all.length) * 100);
-    const fill    = document.getElementById('trackerBarFill');
-    const label   = document.getElementById('trackerPct');
+function updateJourneyProgress() {
+    const total = journeySteps.length;
+    const count = completedSteps.length;
+    const pct = Math.round((count / total) * 100);
+
+    const fill = document.getElementById('journeyBarFill');
+    const label = document.getElementById('journeyPct');
+    const countText = document.getElementById('journeyStepCount');
+
     if (fill) fill.style.width = pct + '%';
     if (label) label.textContent = pct + '%';
-    if (checked.length === all.length && all.length > 0) launchConfetti();
+    if (countText) countText.textContent = `${count} of ${total} steps completed`;
 }
 
 function resetTracker() {
-    document.querySelectorAll('#trackerList input[type=checkbox]').forEach(cb => {
-        cb.checked = false;
-        cb.closest('li').classList.remove('done');
-    });
-    localStorage.removeItem(TRACKER_KEY);
-    updateTrackerUI();
+    completedSteps = [];
+    localStorage.removeItem(JOURNEY_KEY);
+    renderVoterJourney();
+    updateJourneyProgress();
 }
+
 window.resetTracker = resetTracker;
+window.toggleStep = toggleStep;
 
 /* ─── CANDIDATE COMPARISON TABLE ─────────────────────── */
 const comparisonData = [
@@ -459,6 +653,12 @@ const botData = {
         en: "Want to test your knowledge? Scroll down to our Voter Readiness Quiz section!",
         hi: "अपनी जानकारी परखना चाहते हैं? हमारे मतदाता तैयारी प्रश्नोत्तरी अनुभाग पर जाएं!",
         action: () => navigate('quiz')
+    },
+    remote_voting: {
+        keywords: ['remote', 'srv-x', 'distance', 'disability', 'home', 'रिमोट', 'घर'],
+        en: "SRV-X is our conceptual Remote Voting Extension for voters who can't reach booths. It uses AI & Biometrics for security.",
+        hi: "SRV-X उन मतदाताओं के लिए हमारा वैचारिक रिमोट वोटिंग एक्सटेंशन है जो बूथ तक नहीं पहुंच सकते। यह सुरक्षा के लिए AI और बायोमेट्रिक्स का उपयोग करता है।",
+        action: () => navigate('remote-voting')
     }
 };
 
@@ -466,7 +666,8 @@ const suggestionChips = [
     { en: "How to register?", hi: "पंजीकरण कैसे करें?", key: 'registration' },
     { en: "Documents needed?", hi: "क्या दस्तावेज चाहिए?", key: 'id_docs' },
     { en: "When is the election?", hi: "चुनाव कब है?", key: 'dates' },
-    { en: "Is EVM safe?", hi: "क्या EVM सुरक्षित है?", key: 'evm_vvpat' }
+    { en: "Is EVM safe?", hi: "क्या EVM सुरक्षित है?", key: 'evm_vvpat' },
+    { en: "What is SRV-X?", hi: "SRV-X क्या है?", key: 'remote_voting' }
 ];
 
 function toggleChat() {
@@ -859,12 +1060,14 @@ function renderAdminChart() {
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
 
-    adminChart = new Chart(ctx, {
+    if (window.adminChart) window.adminChart.destroy();
+
+    window.adminChart = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: ['08:00', '09:00', '10:00', '11:00', '12:00', '13:00'],
             datasets: [{
-                label: 'Votes / Hr',
+                label: getTranslation('chart.votes'),
                 data: [1200, 1900, 3000, 2500, 2200, 2800],
                 backgroundColor: 'rgba(38, 166, 154, 0.6)',
                 borderColor: '#26a69a',
@@ -908,6 +1111,7 @@ document.addEventListener('DOMContentLoaded', () => {
     loadTracker();
     initVerification();
     initAdminDashboard();
+    initFeedbackDashboard();
 });
 
 /* ─── EDGE CASE HANDLING LOGIC ─────────────────────── */
@@ -999,3 +1203,123 @@ window.resetVerification = function() {
     document.getElementById('faceScanner').innerHTML = '<div class="scan-circle"></div><span class="face-icon">👤</span>';
     showVerifyStep(0); // Back to consent
 };
+
+/* ─── VOTER FEEDBACK SYSTEM LOGIC ────────────────── */
+let feedbackChart = null;
+
+function initFeedbackDashboard() {
+    renderRegionInsights();
+    renderFeedbackChart();
+}
+
+function renderRegionInsights() {
+    const container = document.getElementById('regionInsightsList');
+    if (!container) return;
+
+    const regions = [
+        { name: 'Patna', count: 124, trend: 'up' },
+        { name: 'Gaya', count: 85, trend: 'down' },
+        { name: 'Bhagalpur', count: 62, trend: 'stable' },
+        { name: 'Muzaffarpur', count: 45, trend: 'up' }
+    ];
+
+    container.innerHTML = regions.map(r => `
+        <li class="region-item">
+            <span class="region-name">${r.name}</span>
+            <span class="region-stat">${r.count} ${getTranslation('insights.reports')}</span>
+        </li>
+    `).join('');
+}
+
+function renderFeedbackChart() {
+    const canvas = document.getElementById('issueBreakdownChart');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+
+    if (window.feedbackChart) window.feedbackChart.destroy();
+
+    window.feedbackChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: [
+                getTranslation('issue.queue'),
+                getTranslation('issue.id'),
+                getTranslation('issue.safety'),
+                getTranslation('issue.tech')
+            ],
+            datasets: [{
+                data: [40, 25, 15, 20],
+                backgroundColor: ['#3d5a80', '#26a69a', '#e53935', '#fb8c00'],
+                borderWidth: 0,
+                hoverOffset: 10
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { position: 'right', labels: { boxWidth: 12, font: { size: 10 } } }
+            },
+            cutout: '70%'
+        }
+    });
+}
+
+window.handleFeedbackSubmit = function(event) {
+    event.preventDefault();
+    const type = document.getElementById('issueType').value;
+    const text = document.getElementById('feedbackText').value;
+
+    if (!type || !text) return;
+
+    // Simulate submission
+    const submitBtn = event.target.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.textContent = "Submitting...";
+
+    setTimeout(() => {
+        // Show status tracker
+        document.getElementById('voterFeedbackForm').style.display = 'none';
+        document.getElementById('feedbackStatusTrack').style.display = 'block';
+        
+        // Update Dashboard Data (Simulated)
+        if (feedbackChart) {
+            const index = ['queue', 'id', 'safety', 'technical'].indexOf(type);
+            if (index !== -1) {
+                feedbackChart.data.datasets[0].data[index]++;
+                feedbackChart.update();
+            }
+        }
+
+        // AI Recommendation Update
+        updateAiRecommendation(type);
+
+        // Simulate Status Progression
+        simulateStatusProgression();
+    }, 1500);
+};
+
+function updateAiRecommendation(type) {
+    const el = document.getElementById('aiRecommendationText');
+    const recommendations = {
+        queue: "AI predicts peak traffic at 10 AM. Recommending dispatch of 2 additional EVMs to Patna Booth #12 to reduce wait times.",
+        id: "Detected pattern of ID mismatches. Suggesting immediate broadcast of digital ID verification guidelines via SMS.",
+        safety: "Minor security anomaly detected. Deploying AI-monitored rapid response unit to Gaya Sector 4.",
+        technical: "Technical latency reported. Remote diagnostic engine initialized for Booth #501 VVPAT unit.",
+        other: "System learning from unique report. Categorizing for long-term procedural improvement."
+    };
+    el.textContent = recommendations[type] || recommendations['other'];
+}
+
+function simulateStatusProgression() {
+    const steps = ['review', 'resolved'];
+    steps.forEach((step, i) => {
+        setTimeout(() => {
+            document.getElementById(`st-${step}`).classList.add('active');
+            if (step === 'resolved') {
+                document.getElementById('statusMsg').textContent = "Resolved: Our team has addressed your concern. Thank you for your feedback!";
+                launchConfetti();
+            }
+        }, (i + 1) * 4000);
+    });
+}
