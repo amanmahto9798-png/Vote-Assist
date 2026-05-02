@@ -514,7 +514,7 @@ function renderVoterJourney() {
                     <p data-i18n="${step.d}">${getTranslation(step.d)}</p>
                 </div>
                 <div class="status-badge ${statusClass}">${statusText}</div>
-                ${isInProgress ? '<div class="step-arrow">→</div>' : ''}
+                ${isInProgress ? `<div class="step-arrow" title="${getTranslation('status.inprogress')}">→</div>` : ''}
             </div>
         `;
     }).join('');

@@ -1025,14 +1025,23 @@ p  { font-size:0.97rem; color:var(--text-mid); margin-bottom:1.4rem; }
 }
 
 .step-arrow {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     color: var(--accent-teal);
-    margin-left: 1rem;
-    transition: transform 0.3s ease;
+    margin-left: auto;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--accent-teal-light);
+    transition: all 0.3s ease;
 }
 
 .journey-step-card:hover .step-arrow {
     transform: translateX(5px);
+    background: var(--accent-teal);
+    color: white;
 }
 
 /* Side Panel */
