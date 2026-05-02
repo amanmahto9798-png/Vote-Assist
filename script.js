@@ -458,17 +458,17 @@ function buildQuiz() {
 ══════════════════════════════════════════════════════ */
 const JOURNEY_KEY = 'voteassist-journey-v2';
 const journeySteps = [
-    { id: 1, icon: '🆔', t: 'track.1', d: 'Ensure you have your EPIC number or Voter ID card with you.' },
-    { id: 2, icon: '📍', t: 'track.2', d: 'Find your assigned polling station using your PIN code or address.' },
-    { id: 3, icon: '👥', t: 'track.3', d: 'Learn about the candidates, their vision and development plans.' },
-    { id: 4, icon: '🖥️', t: 'track.4', d: 'Experience a mock voting process to familiarize yourself with the system.' },
-    { id: 5, icon: '⌨️', t: 'track.5', d: 'Enter your Voter ID or scan your EPIC for verification.' },
-    { id: 6, icon: '☝️', t: 'track.6', d: 'Biometric verification to ensure secure and fair voting.' },
-    { id: 7, icon: '🔍', t: 'track.7', d: 'System matches your details with the official electoral roll.' },
-    { id: 8, icon: '✅', t: 'track.8', d: 'Once verified, the system allows you to proceed to the ballot.' },
-    { id: 9, icon: '🗳️', t: 'track.9', d: 'Select your preferred candidate on the digital ballot paper.' },
-    { id: 10, icon: '📝', t: 'track.10', d: 'Review your selection before finalizing your vote.' },
-    { id: 11, icon: '🎉', t: 'track.11', d: 'Your vote is securely cast and recorded in the system.' }
+    { id: 1, icon: '🆔', t: 'track.1', d: 'track.1.d' },
+    { id: 2, icon: '📍', t: 'track.2', d: 'track.2.d' },
+    { id: 3, icon: '👥', t: 'track.3', d: 'track.3.d' },
+    { id: 4, icon: '🖥️', t: 'track.4', d: 'track.4.d' },
+    { id: 5, icon: '⌨️', t: 'track.5', d: 'track.5.d' },
+    { id: 6, icon: '☝️', t: 'track.6', d: 'track.6.d' },
+    { id: 7, icon: '🔍', t: 'track.7', d: 'track.7.d' },
+    { id: 8, icon: '✅', t: 'track.8', d: 'track.8.d' },
+    { id: 9, icon: '🗳️', t: 'track.9', d: 'track.9.d' },
+    { id: 10, icon: '📝', t: 'track.10', d: 'track.10.d' },
+    { id: 11, icon: '🎉', t: 'track.11', d: 'track.11.d' }
 ];
 
 let completedSteps = JSON.parse(localStorage.getItem(JOURNEY_KEY)) || [];
@@ -499,7 +499,7 @@ function renderVoterJourney() {
         let statusText = getTranslation('status.pending');
         if (isCompleted) {
             statusClass = 'completed';
-            statusText = getTranslation('status.completed') + ' ✓';
+            statusText = getTranslation('status.completed');
         } else if (isInProgress) {
             statusClass = 'in-progress';
             statusText = getTranslation('status.inprogress');
@@ -511,9 +511,10 @@ function renderVoterJourney() {
                 <div class="step-card-icon">${step.icon}</div>
                 <div class="step-card-content">
                     <h4 data-i18n="${step.t}">${getTranslation(step.t)}</h4>
-                    <p>${step.d}</p>
+                    <p data-i18n="${step.d}">${getTranslation(step.d)}</p>
                 </div>
                 <div class="status-badge ${statusClass}">${statusText}</div>
+                ${isInProgress ? '<div class="step-arrow">→</div>' : ''}
             </div>
         `;
     }).join('');
@@ -545,7 +546,12 @@ function updateJourneyProgress() {
 
     if (fill) fill.style.width = pct + '%';
     if (label) label.textContent = pct + '%';
-    if (countText) countText.textContent = `${count} of ${total} steps completed`;
+    
+    if (countText) {
+        const template = getTranslation('label.steps.completed');
+        const text = template.replace('{total}', total);
+        countText.textContent = `${count} ${text}`;
+    }
 }
 
 function resetTracker() {

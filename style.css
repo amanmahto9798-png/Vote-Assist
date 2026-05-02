@@ -1024,6 +1024,17 @@ p  { font-size:0.97rem; color:var(--text-mid); margin-bottom:1.4rem; }
     color: var(--text-light);
 }
 
+.step-arrow {
+    font-size: 1.5rem;
+    color: var(--accent-teal);
+    margin-left: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.journey-step-card:hover .step-arrow {
+    transform: translateX(5px);
+}
+
 /* Side Panel */
 .journey-side-panel {
     flex: 0.8;
