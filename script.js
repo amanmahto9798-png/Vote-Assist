@@ -507,14 +507,13 @@ function renderVoterJourney() {
 
         return `
             <div class="journey-step-card ${statusClass}" onclick="toggleStep(${step.id})">
-                <div class="step-indicator">${isCompleted ? '✓' : step.id}</div>
+                <div class="step-indicator">${isCompleted ? '✓' : (isInProgress ? '→' : step.id)}</div>
                 <div class="step-card-icon">${step.icon}</div>
                 <div class="step-card-content">
                     <h4 data-i18n="${step.t}">${getTranslation(step.t)}</h4>
                     <p data-i18n="${step.d}">${getTranslation(step.d)}</p>
                 </div>
                 <div class="status-badge ${statusClass}">${statusText}</div>
-                ${isInProgress ? `<div class="step-arrow" title="${getTranslation('status.inprogress')}">→</div>` : ''}
             </div>
         `;
     }).join('');
