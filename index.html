@@ -94,7 +94,6 @@
                 </div>
                 <div class="hero-btns">
                     <button onclick="navigate('process')" class="cta-btn primary-hero-btn">🚀 Start Your Voting Journey →</button>
-                    <button onclick="navigate('features-quick')" class="nav-btn secondary-hero-btn">🔳 Explore Features</button>
                 </div>
             </div>
             <div class="hero-image-container">
@@ -114,42 +113,44 @@
                  <div class="cd-sep">:</div>
                  <div class="cd-item"><div class="cd-num" id="cd-secs">--</div><div class="cd-label" data-i18n="cd.secs">SECS</div></div>
              </div>
-             <p class="countdown-sub" data-i18n="countdown.target">Target: Bihar Assembly Elections — Nov 15, 2026</p>
         </div>
     </div>
 </section>
 
-<!-- New Section: Feature Cards -->
-<section id="features-quick" class="slide">
-    <div class="features-grid-section">
-        <div class="features-row">
-            <div class="feat-card" onclick="navigate('process')">
-                <div class="feat-card-icon process-icon">📖</div>
-                <h3 data-i18n="nav.process">Learn the Process</h3>
-                <p>Understand each step of the election process in simple language.</p>
-                <span class="feat-link">Explore →</span>
+<!-- ── NEW SECTION: WHY VOTING MATTERS ── -->
+<section id="why-vote" class="slide">
+    <div class="content-wrapper impact-wrapper">
+        <div class="impact-header">
+            <div class="section-badge" style="background: rgba(139, 92, 246, 0.1); color: var(--accent-purple);">CIVIC IMPACT</div>
+            <h2 data-i18n="impact.h2">The Power of Your Single Vote</h2>
+            <p data-i18n="impact.p">Voting isn't just a right; it's your most powerful tool to shape the world you want to live in.</p>
+        </div>
+
+        <div class="impact-grid">
+            <div class="impact-card interactive-impact" onclick="showImpactDetail(1)">
+                <div class="impact-icon-circle" style="background: var(--accent-teal-light); color: var(--accent-teal);">🚀</div>
+                <h3 data-i18n="impact.1.t">Shape the Future</h3>
+                <p data-i18n="impact.1.d">Your vote decides the leaders who will create policies on education, jobs, and technology for the next 5 years.</p>
+                <span class="learn-more-hint">Click to learn more →</span>
             </div>
-            <div class="feat-card" onclick="navigate('verification')">
-                <div class="feat-card-icon verify-icon">🔒</div>
-                <h3 data-i18n="nav.verify">Secure & Verified Voting (Concept)</h3>
-                <p>Explore secure voting concepts with identity verification and one-person-one-vote.</p>
-                <span class="feat-link">Explore →</span>
+            <div class="impact-card interactive-impact" onclick="showImpactDetail(2)">
+                <div class="impact-icon-circle" style="background: var(--accent-blue-light); color: var(--accent-blue);">⚖️</div>
+                <h3 data-i18n="impact.2.t">Ultimate Accountability</h3>
+                <p data-i18n="impact.2.d">Voting is how you hold the government accountable. It is your performance review of those in power.</p>
+                <span class="learn-more-hint">Click to learn more →</span>
             </div>
-            <div class="feat-card" onclick="navigate('tracker')">
-                <div class="feat-card-icon tracker-icon">📊</div>
-                <h3 data-i18n="nav.tracker">Transparency Tracker</h3>
-                <p>Track the journey of your vote from submission to counting with full transparency.</p>
-                <span class="feat-link">Explore →</span>
-            </div>
-            <div class="feat-card" onclick="navigate('feedback')">
-                <div class="feat-card-icon feedback-icon">💬</div>
-                <h3 data-i18n="nav.feedback">Voter Feedback</h3>
-                <p>Share your experience and help us improve the election process.</p>
-                <span class="feat-link">Share Feedback →</span>
+            <div class="impact-card interactive-impact" onclick="showImpactDetail(3)">
+                <div class="impact-icon-circle" style="background: var(--accent-orange-light); color: var(--accent-orange);">💎</div>
+                <h3 data-i18n="impact.3.t">The Great Equalizer</h3>
+                <p data-i18n="impact.3.d">In the voting booth, everyone is equal. Your voice carries the same weight as the most powerful person in the country.</p>
+                <span class="learn-more-hint">Click to learn more →</span>
             </div>
         </div>
 
-
+        <div class="impact-quote">
+            <p>"Bad officials are elected by good citizens who do not vote."</p>
+            <span>— George Jean Nathan</span>
+        </div>
     </div>
 </section>
 
@@ -220,6 +221,60 @@
             <div class="process-footer-badge">
                  <span class="shield-icon">🛡️</span>
                  <span data-i18n="badge.fair">Every step ensures a free, fair and transparent election.</span>
+            </div>
+
+            <!-- EVM SIMULATOR WIDGET -->
+            <div class="evm-simulator-container">
+                <div class="evm-sim-header">
+                    <div class="section-badge" style="background: rgba(38, 166, 154, 0.1); color: var(--accent-teal);">INTERACTIVE SIMULATOR</div>
+                    <h3>EVM & VVPAT Training</h3>
+                    <p>Practice the voting process to feel confident at the polling booth.</p>
+                </div>
+                <div class="evm-sim-grid">
+                    <!-- Balloting Unit -->
+                    <div class="evm-unit balloting-unit">
+                        <div class="evm-unit-label">BALLOTING UNIT</div>
+                        <div class="candidate-rows">
+                            <div class="evm-candidate-row">
+                                <span class="cand-num">1</span>
+                                <div class="cand-symbol">🔵</div>
+                                <span class="cand-name">Candidate A</span>
+                                <div class="vote-button" onclick="simulateVote(1)"></div>
+                                <div class="vote-lamp" id="lamp-1"></div>
+                            </div>
+                            <div class="evm-candidate-row">
+                                <span class="cand-num">2</span>
+                                <div class="cand-symbol">🟢</div>
+                                <span class="cand-name">Candidate B</span>
+                                <div class="vote-button" onclick="simulateVote(2)"></div>
+                                <div class="vote-lamp" id="lamp-2"></div>
+                            </div>
+                            <div class="evm-candidate-row">
+                                <span class="cand-num">3</span>
+                                <div class="cand-symbol">🟠</div>
+                                <span class="cand-name">Candidate C</span>
+                                <div class="vote-button" onclick="simulateVote(3)"></div>
+                                <div class="vote-lamp" id="lamp-3"></div>
+                            </div>
+                        </div>
+                        <div class="evm-beeper" id="evmBeeper"></div>
+                    </div>
+                    <!-- VVPAT Unit -->
+                    <div class="evm-unit vvpat-unit">
+                        <div class="evm-unit-label">VVPAT UNIT</div>
+                        <div class="vvpat-window">
+                            <div class="vvpat-slip" id="vvpatSlip">
+                                <div class="slip-header">VVPAT SLIP</div>
+                                <div class="slip-content">
+                                    <div class="slip-symbol" id="slipSymbol">?</div>
+                                    <div class="slip-name" id="slipName">Candidate</div>
+                                </div>
+                                <div class="slip-footer">VERIFY YOUR VOTE</div>
+                            </div>
+                        </div>
+                        <p class="vvpat-hint">Slip appears for 7 seconds</p>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -296,7 +351,7 @@
 
         <div class="nav-buttons">
             <button onclick="navigate('process')" class="nav-btn" data-i18n="btn.back">← Back</button>
-            <button onclick="navigate('quiz')"    class="cta-btn" data-i18n="btn.next.quiz">Next: Take the Quiz →</button>
+            <button onclick="navigate('tracker')" class="cta-btn" data-i18n="btn.next.tracker">Next: Voter's Journey →</button>
         </div>
     </div>
 </section>
@@ -316,7 +371,7 @@
                 <p data-i18n="tracker.p">Follow these simple steps to complete your voting process securely and confidently.</p>
             </div>
             <div class="journey-header-illustration">
-                <img src="https://illustrations.popsy.co/teal/online-registration.svg" alt="Journey" style="max-width: 280px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));">
+                <img src="journey_illustration.png" alt="Journey" style="max-width: 280px; filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1)); border-radius: 12px;">
             </div>
         </div>
 
@@ -379,6 +434,14 @@
                     <div class="journey-quote-box">
                         <p class="quote-text">“Your vote is your voice. Make it count!”</p>
                         <span class="quote-author">— VoteAssist</span>
+                    </div>
+
+                    <!-- Digital Badge CTA -->
+                    <div class="badge-cta-box" id="badgeCta" style="display: none;">
+                        <div class="confetti-mini">🎊</div>
+                        <h4>Congratulations!</h4>
+                        <p>You are now a fully prepared voter.</p>
+                        <button class="cta-btn badge-gen-btn" onclick="generateVoterBadge()">🎁 Claim Digital Badge</button>
                     </div>
 
                     <button class="nav-btn secondary-btn" onclick="resetTracker()" style="width: 100%; margin-top: 1.5rem;" data-i18n="tracker.reset">🔄 Reset Journey</button>
@@ -649,11 +712,11 @@
             </select>
         </div>
 
-        <div class="compare-table-wrapper">
+        <div class="compare-table-wrapper adr-dashboard">
             <table class="compare-table" id="compareTable">
                 <thead>
                     <tr>
-                        <th class="issue-col">Issue</th>
+                        <th class="issue-col">Metric (ADR Style)</th>
                         <th class="cand-col cand-a">🔵 Candidate A</th>
                         <th class="cand-col cand-b">🟢 Candidate B</th>
                         <th class="cand-col cand-c">🟠 Candidate C</th>
@@ -665,9 +728,13 @@
             </table>
         </div>
 
+        <div class="adr-disclaimer">
+            <p>ℹ️ Data based on 2024 Election Affidavits. Source: Association for Democratic Reforms (ADR).</p>
+        </div>
+
         <div class="nav-buttons">
             <button onclick="navigate('admin')" class="nav-btn" data-i18n="btn.back">← Back</button>
-            <button onclick="navigate('dosanddonts')" class="cta-btn" data-i18n="btn.next.guide">Next: Voter Guide →</button>
+            <button onclick="navigate('remote-voting')" class="cta-btn" data-i18n="btn.next.remote">Next: Remote Voting →</button>
         </div>
     </div>
 </section>
@@ -725,7 +792,7 @@
 
         <div class="nav-buttons">
             <button onclick="navigate('comparison')" class="nav-btn" data-i18n="btn.back">← Back</button>
-            <button onclick="navigate('dosanddonts')" class="cta-btn" data-i18n="btn.next.guide">Next: Voter Guide →</button>
+            <button onclick="navigate('feedback')" class="cta-btn" data-i18n="btn.next.feedback">Next: Feedback →</button>
         </div>
     </div>
 </section>
@@ -1017,5 +1084,44 @@
 </div>
 
 <script src="script.js"></script>
+<!-- ── Digital Badge Modal ── -->
+<div id="badgeModal" class="modal">
+    <div class="modal-content badge-modal-content">
+        <span class="close" onclick="closeBadgeModal()">&times;</span>
+        <div class="badge-display-area">
+            <canvas id="badgeCanvas" width="500" height="500"></canvas>
+        </div>
+        <div class="badge-actions">
+            <p>Right-click the image to save or use the button below!</p>
+            <button class="cta-btn" onclick="downloadBadge()">📥 Download Badge</button>
+            <p class="share-hint">Share your preparedness on Social Media! #VoteAssist #ReadyToVote</p>
+        </div>
+    </div>
+</div>
+
+<!-- Impact Detail Modal -->
+<div id="impactModal" class="modal impact-detail-modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeImpactModal()">&times;</span>
+        <div class="detail-icon" id="impactModalIcon">🚀</div>
+        <h2 id="impactModalTitle">Shape the Future</h2>
+        <p id="impactModalDesc">Detailed description here...</p>
+        <button class="cta-btn" style="margin-top:2rem; width:100%" onclick="closeImpactModal()">Got it!</button>
+    </div>
+</div>
+<style>
+@media (max-width: 768px) {
+    .impact-grid { grid-template-columns: 1fr; }
+}
+
+.interactive-impact { cursor: pointer; position: relative; }
+.learn-more-hint { font-size: 0.7rem; font-weight: 700; color: var(--accent-teal); margin-top: 1rem; opacity: 0; transition: opacity 0.3s; }
+.interactive-impact:hover .learn-more-hint { opacity: 1; }
+
+.impact-detail-modal .modal-content { max-width: 500px; text-align: center; padding: 3rem 2rem; }
+.impact-detail-modal .detail-icon { font-size: 3rem; margin-bottom: 1rem; }
+.impact-detail-modal h2 { margin-bottom: 1.5rem; font-weight: 800; }
+.impact-detail-modal p { color: var(--text-mid); line-height: 1.8; font-size: 1.05rem; }
+</style>
 </body>
 </html>

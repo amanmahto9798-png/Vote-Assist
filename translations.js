@@ -11,12 +11,20 @@ window.translations = {
     'badge.welcome':'Welcome','badge.flowchart':'Flowchart','badge.graphs':'Graphs',
     'badge.quiz':'🧠 Quiz','badge.tracker':'🗺️ Voter Journey','badge.verify':'🔒 Verification','badge.compare':'⚖️ Compare','badge.guide':'Guidelines',
     /* Tags */
-    'tag.flowchart':'Interactive — click any step','tag.graphs':'Key Deadlines & Data',
+    'tag.flowchart':'Voter\'s Journey','tag.graphs':'Key Deadlines & Data',
     'tag.compare':'Your Voting Guidelines',
     /* Intro */
     'intro.h1':'Welcome to VoteAssist',
     'intro.p':'Your interactive guide to understanding the election process, timelines, and how to make your vote count.',
     'intro.btn':'Explore the Process →',
+    /* Impact Section */
+    'impact.h2':'The Power of Your Single Vote','impact.p':'Voting isn\'t just a right; it\'s your most powerful tool to shape the world you want to live in.',
+    'impact.1.t':'Shape the Future','impact.1.d':'Your vote decides the leaders who will create policies on education, jobs, and technology for the next 5 years.',
+    'impact.1.long':'Every law passed regarding climate change, education subsidies, and minimum wage is a direct result of who is in office. By voting, you aren\'t just choosing a name; you are choosing the rules you will live by.',
+    'impact.2.t':'Ultimate Accountability','impact.2.d':'Voting is how you hold the government accountable. It is your performance review of those in power.',
+    'impact.2.long':'Public officials are employees of the people. Voting is the only time the "bosses" (the citizens) get to decide if the employee has done a good job or if someone else should be hired.',
+    'impact.3.t':'The Great Equalizer','impact.3.d':'In the voting booth, everyone is equal. Your voice carries the same weight as the most powerful person in the country.',
+    'impact.3.long':'Outside the voting booth, people have different levels of wealth and influence. Inside, there is no status. Your vote is the one place where you have exactly the same power as a billionaire or a celebrity.',
     'countdown.label':'⏳ Next Election Countdown',
     'countdown.target':'Target: Bihar Assembly Elections — Nov 15, 2026',
     'cd.days':'Days','cd.hours':'Hours','cd.mins':'Mins','cd.secs':'Secs',
@@ -82,8 +90,8 @@ window.translations = {
     'compare.h2':'Candidate Comparison',
     'compare.p':'Compare candidates side-by-side on the issues that matter most. Use the filter to focus on a specific topic.',
     'compare.filter':'Filter by Issue:','compare.all':'All Issues',
-    'compare.economy':'Economy','compare.healthcare':'Healthcare',
-    'compare.education':'Education','compare.environment':'Environment','compare.infra':'Infrastructure',
+    'compare.economy':'Economy Policy','compare.healthcare':'Healthcare','compare.education':'Digital Education',
+    'compare.environment':'Sustainability','compare.infra':'Infrastructure','compare.criminal':'Criminal Records','compare.edu':'Education','compare.assets':'Total Assets',
     /* Voter Guide */
     'guide.h2':'Voter Guide',
     'pros.h3':'Pros of Voting','cons.h3':'Cons / Challenges','dont.h3':'What NOT to Do as a Voter',
@@ -109,7 +117,7 @@ window.translations = {
     'fn.7':'No credible experts or official sources are cited',
     /* Buttons */
     'btn.back':'← Back','btn.next.timeline':'Next: Timeline →','btn.next.quiz':'Next: Take the Quiz →',
-    'btn.next.tracker':'Next: Tracker →','btn.next.compare':'Next: Compare →',
+    'btn.next.tracker':'Next: Voter\'s Journey →','btn.next.compare':'Next: Compare →','btn.next.remote':'Next: Remote Voting →','btn.next.feedback':'Next: Feedback →',
     'btn.next.guide':'Next: Voter Guide →','btn.next.verify':'Next: Smart Verification →','btn.next.fraud':'Next: Fraud Detect →','btn.next.admin':'Next: Admin Dashboard →','btn.next.mission':'Next: Our Mission →','btn.next.step':'Next Step','btn.start.over':'↩ Start Over',
     /* Chatbot */
     'bot.title':'🗳️ VoteBot','bot.welcome':'Hi! I\'m VoteBot 🤖 Ask me anything about voting in India!',
@@ -278,12 +286,20 @@ window.translations = {
     'badge.welcome':'स्वागत है','badge.flowchart':'फ्लोचार्ट','badge.graphs':'ग्राफ',
     'badge.quiz':'🧠 प्रश्नोत्तरी','badge.tracker':'🗺️ मतदाता यात्रा','badge.verify':'🔒 सत्यापन','badge.fraud':'🛡️ धोखाधड़ी रोक','badge.admin':'📊 व्यवस्थापक डैशबोर्ड','badge.compare':'⚖️ तुलना','badge.guide':'दिशा-निर्देश',
     /* Tags */
-    'tag.flowchart':'इंटरैक्टिव — किसी चरण पर क्लिक करें','tag.graphs':'मुख्य समय-सीमा और डेटा',
+    'tag.flowchart':'मतदाता यात्रा','tag.graphs':'मुख्य समय-सीमा और डेटा',
     'tag.compare':'आपके मतदान के दिशा-निर्देश',
     /* Intro */
     'intro.h1':'VoteAssist में आपका स्वागत है',
     'intro.p':'चुनाव प्रक्रिया, समय-सीमा और अपने वोट को कैसे गिनाएं — इसे समझने का आपका इंटरैक्टिव गाइड।',
-    'intro.btn':'प्रक्रिया देखें →',
+    'intro.btn':'प्रक्रिया का अन्वेषण करें →',
+    /* Impact Section */
+    'impact.h2':'आपके एक वोट की शक्ति','impact.p':'मतदान केवल एक अधिकार नहीं है; यह उस दुनिया को आकार देने का आपका सबसे शक्तिशाली उपकरण है जिसमें आप रहना चाहते हैं।',
+    'impact.1.t':'भविष्य को आकार दें','impact.1.d':'आपका वोट उन नेताओं को तय करता है जो अगले 5 वर्षों के लिए शिक्षा, नौकरियों और तकनीक पर नीतियां बनाएंगे।',
+    'impact.1.long':'जलवायु परिवर्तन, शिक्षा सब्सिडी और न्यूनतम वेतन के संबंध में पारित प्रत्येक कानून इस बात का सीधा परिणाम है कि कौन सत्ता में है। मतदान करके, आप केवल एक नाम नहीं चुन रहे हैं; आप उन नियमों को चुन रहे हैं जिनके तहत आप रहेंगे।',
+    'impact.2.t':'परम जवाबदेही','impact.2.d':'मतदान वह तरीका है जिससे आप सरकार को जवाबदेह ठहराते हैं। यह सत्ता में बैठे लोगों की आपके द्वारा की गई प्रदर्शन समीक्षा है।',
+    'impact.2.long':'सार्वजनिक अधिकारी जनता के कर्मचारी होते हैं। मतदान ही एकमात्र समय होता है जब "बॉस" (नागरिक) यह तय करते हैं कि कर्मचारी ने अच्छा काम किया है या किसी और को काम पर रखा जाना चाहिए।',
+    'impact.3.t':'महान समानता','impact.3.d':'वोटिंग बूथ में, हर कोई समान है। आपकी आवाज़ का वजन देश के सबसे शक्तिशाली व्यक्ति के बराबर होता है।',
+    'impact.3.long':'वोटिंग बूथ के बाहर, लोगों के पास धन और प्रभाव के अलग-अलग स्तर होते हैं। अंदर, कोई स्थिति नहीं होती। आपका वोट एक ऐसी जगह है जहाँ आपके पास एक अरबपति या सेलिब्रिटी के समान ही शक्ति होती है।',
     'countdown.label':'⏳ अगले चुनाव की उलटी गिनती',
     'countdown.target':'लक्ष्य: बिहार विधानसभा चुनाव — 15 नवंबर 2026',
     'cd.days':'दिन','cd.hours':'घंटे','cd.mins':'मिनट','cd.secs':'सेकंड',
@@ -349,8 +365,8 @@ window.translations = {
     'compare.h2':'उम्मीदवार तुलना',
     'compare.p':'उम्मीदवारों को आपके लिए महत्वपूर्ण मुद्दों पर साथ-साथ तुलना करें।',
     'compare.filter':'मुद्दे के आधार पर फ़िल्टर करें:','compare.all':'सभी मुद्दे',
-    'compare.economy':'अर्थव्यवस्था','compare.healthcare':'स्वास्थ्य सेवा',
-    'compare.education':'शिक्षा','compare.environment':'पर्यावरण','compare.infra':'बुनियादी ढाँचा',
+    'compare.economy':'आर्थिक नीति','compare.healthcare':'स्वास्थ्य सेवा','compare.education':'डिजिटल शिक्षा',
+    'compare.environment':'स्थिरता','compare.infra':'बुनियादी ढांचा','compare.criminal':'आपराधिक रिकॉर्ड','compare.edu':'शिक्षा','compare.assets':'कुल संपत्ति',
     /* Voter Guide */
     'guide.h2':'मतदाता गाइड',
     'pros.h3':'मतदान के फायदे','cons.h3':'चुनौतियाँ','dont.h3':'मतदाता के रूप में क्या नहीं करें',
@@ -377,7 +393,7 @@ window.translations = {
     'fn.7':'कोई विश्वसनीय विशेषज्ञ या आधिकारिक स्रोत उद्धृत नहीं',
     /* Buttons */
     'btn.back':'← वापस','btn.next.timeline':'अगला: समयरेखा →','btn.next.quiz':'अगला: प्रश्नोत्तरी →',
-    'btn.next.tracker':'अगला: ट्रैकर →','btn.next.compare':'अगला: तुलना →',
+    'btn.next.tracker':'अगला: मतदाता यात्रा →','btn.next.compare':'अगला: तुलना →','btn.next.remote':'अगला: रिमोट वोटिंग →','btn.next.feedback':'अगला: फीडबैक →',
     'btn.next.guide':'अगला: मतदाता गाइड →','btn.next.verify':'अगला: स्मार्ट सत्यापन →','btn.next.fraud':'अगला: धोखाधड़ी रोक →','btn.next.admin':'अगला: व्यवस्थापक डैशबोर्ड →','btn.next.mission':'अगला: हमारा मिशन →','btn.next.step':'अगला चरण','btn.start.over':'↩ फिर से शुरू करें',
     /* Chatbot */
     'bot.title':'🗳️ वोटबॉट','bot.welcome':'नमस्ते! मैं VoteBot 🤖 हूँ। भारत में मतदान के बारे में कुछ भी पूछें!',

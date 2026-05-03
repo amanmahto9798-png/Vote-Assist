@@ -38,6 +38,7 @@ function updateUI() {
     if (window.renderRegionInsights) renderRegionInsights();
     renderVoterJourney();
     updateJourneyProgress();
+    checkJourneyCompletion();
     
     // Refresh Charts with new language labels
     if (window.chartRendered) renderChart();
@@ -553,22 +554,177 @@ function updateJourneyProgress() {
     }
 }
 
+function checkJourneyCompletion() {
+    const total = journeySteps.length;
+    const count = completedSteps.length;
+    const badgeCta = document.getElementById('badgeCta');
+    if (badgeCta) {
+        badgeCta.style.display = (count === total) ? 'block' : 'none';
+    }
+}
+
+/* ─── EVM SIMULATOR LOGIC ─── */
+function simulateVote(candId) {
+    // Reset all lamps
+    document.querySelectorAll('.vote-lamp').forEach(l => l.classList.remove('lit'));
+    
+    // Light the lamp for selected candidate
+    const lamp = document.getElementById(`lamp-${candId}`);
+    if (lamp) lamp.classList.add('lit');
+    
+    // Play "Beep" sound effect (visual feedback)
+    const beeper = document.getElementById('evmBeeper');
+    if (beeper) {
+        beeper.style.background = '#ef4444';
+        setTimeout(() => beeper.style.background = '#475569', 1000);
+    }
+    
+    // Trigger VVPAT
+    const candidates = [
+        { name: 'Candidate A', symbol: '🔵' },
+        { name: 'Candidate B', symbol: '🟢' },
+        { name: 'Candidate C', symbol: '🟠' }
+    ];
+    const cand = candidates[candId - 1];
+    
+    const slip = document.getElementById('vvpatSlip');
+    const slipSymbol = document.getElementById('slipSymbol');
+    const slipName = document.getElementById('slipName');
+    
+    if (slip && cand) {
+        slipSymbol.textContent = cand.symbol;
+        slipName.textContent = cand.name;
+        slip.classList.add('show');
+        
+        setTimeout(() => {
+            slip.classList.remove('show');
+            document.querySelectorAll('.vote-lamp').forEach(l => l.classList.remove('lit'));
+        }, 7000);
+    }
+}
+window.simulateVote = simulateVote;
+
+/* ─── DIGITAL BADGE GENERATION ─── */
+function generateVoterBadge() {
+    const canvas = document.getElementById('badgeCanvas');
+    const ctx = canvas.getContext('2d');
+    const modal = document.getElementById('badgeModal');
+    
+    // Background
+    const grad = ctx.createLinearGradient(0, 0, 500, 500);
+    grad.addColorStop(0, '#0ea5a4');
+    grad.addColorStop(1, '#3b82f6');
+    ctx.fillStyle = grad;
+    ctx.fillRect(0, 0, 500, 500);
+    
+    // Inner Border
+    ctx.strokeStyle = 'rgba(255,255,255,0.3)';
+    ctx.lineWidth = 20;
+    ctx.strokeRect(30, 30, 440, 440);
+    
+    // Content
+    ctx.fillStyle = '#fff';
+    ctx.textAlign = 'center';
+    
+    ctx.font = 'bold 40px Inter';
+    ctx.fillText('VOTEASSIST', 250, 80);
+    
+    ctx.font = '24px Inter';
+    ctx.fillText('CERTIFICATE OF READINESS', 250, 120);
+    
+    ctx.font = 'bold 80px Inter';
+    ctx.fillText('🏆', 250, 220);
+    
+    ctx.font = 'bold 36px Inter';
+    ctx.fillText('READY TO VOTE', 250, 300);
+    
+    ctx.font = '18px Inter';
+    ctx.fillText('This individual has completed the comprehensive', 250, 350);
+    ctx.fillText('Voter Journey and is fully prepared for the', 250, 375);
+    ctx.fillText('2026 Elections.', 250, 400);
+    
+    ctx.font = 'italic 16px Inter';
+    ctx.fillText('Verified by VoteAssist Platform', 250, 450);
+    
+    // Show Modal
+    if (modal) modal.classList.add('show');
+}
+window.generateVoterBadge = generateVoterBadge;
+
+function closeBadgeModal() {
+    const modal = document.getElementById('badgeModal');
+    if (modal) modal.classList.remove('show');
+}
+window.closeBadgeModal = closeBadgeModal;
+
+function downloadBadge() {
+    const canvas = document.getElementById('badgeCanvas');
+    const link = document.createElement('a');
+    link.download = 'VoteAssist-Badge.png';
+    link.href = canvas.toDataURL();
+    link.click();
+}
+window.downloadBadge = downloadBadge;
+
 function resetTracker() {
     completedSteps = [];
     localStorage.removeItem(JOURNEY_KEY);
     renderVoterJourney();
     updateJourneyProgress();
+    checkJourneyCompletion();
 }
 
 window.resetTracker = resetTracker;
+
+/* ─── IMPACT SECTION LOGIC ─── */
+function showImpactDetail(id) {
+    const modal = document.getElementById('impactModal');
+    const title = document.getElementById('impactModalTitle');
+    const desc = document.getElementById('impactModalDesc');
+    const icon = document.getElementById('impactModalIcon');
+    
+    const details = {
+        1: { 
+            t: getTranslation('impact.1.t'), 
+            d: getTranslation('impact.1.long'),
+            i: '🚀'
+        },
+        2: { 
+            t: getTranslation('impact.2.t'), 
+            d: getTranslation('impact.2.long'),
+            i: '⚖️'
+        },
+        3: { 
+            t: getTranslation('impact.3.t'), 
+            d: getTranslation('impact.3.long'),
+            i: '💎'
+        }
+    };
+    
+    const data = details[id];
+    if (data && modal) {
+        title.textContent = data.t;
+        desc.textContent = data.d;
+        icon.textContent = data.i;
+        modal.classList.add('show');
+    }
+}
+window.showImpactDetail = showImpactDetail;
+
+function closeImpactModal() {
+    const modal = document.getElementById('impactModal');
+    if (modal) modal.classList.remove('show');
+}
+window.closeImpactModal = closeImpactModal;
 window.toggleStep = toggleStep;
 
 /* ─── CANDIDATE COMPARISON TABLE ─────────────────────── */
 const comparisonData = [
+    { category:'criminal',       issueKey:'compare.criminal',     a:'0 Cases',                               b:'1 Pending Case (Minor)',                 c:'0 Cases' },
+    { category:'education',      issueKey:'compare.edu',          a:'Post Graduate (MBA)',                   b:'Graduate (LLB)',                         c:'Doctorate (PhD)' },
+    { category:'assets',         issueKey:'compare.assets',       a:'₹5.2 Crores',                           b:'₹1.8 Crores',                            c:'₹12.4 Crores' },
     { category:'economy',        issueKey:'compare.economy',      a:'Tax cuts for businesses, boost FDI',    b:'Increase minimum wage, public welfare',  c:'Privatisation of state enterprises' },
     { category:'healthcare',     issueKey:'compare.healthcare',   a:'PPP model for hospitals',               b:'Universal health insurance for all',     c:'Boost Ayushman Bharat scheme' },
-    { category:'education',      issueKey:'compare.education',    a:'Digital classrooms nationwide',         b:'Hire 1 lakh teachers, mid-day meals',    c:'Curriculum reform & STEM focus' },
-    { category:'environment',    issueKey:'compare.environment',  a:'Carbon-neutral target by 2070',         b:'50% renewable energy by 2035',           c:'Stricter industrial pollution norms' },
     { category:'infrastructure', issueKey:'compare.infra',        a:'Bullet train on 5 corridors',           b:'Rural roads & bus connectivity',         c:'Waterways development' }
 ];
 
